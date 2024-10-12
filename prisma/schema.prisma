@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Account {
-  id                 String    @id
+  id                 String    @id @default(cuid())
   userId             String
   providerType       String
   providerId         String
@@ -17,55 +17,142 @@ model Account {
   accessToken        String?
   accessTokenExpires DateTime?
   createdAt          DateTime  @default(now())
-  updatedAt          DateTime
-  User               User      @relation(fields: [userId], references: [id])
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
 
   @@unique([providerId, providerAccountId])
 }
 
-model Post {
-  id        String    @id
-  title     String
-  content   String
-  authorId  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  tags      String[]  @default([])
-  User      User      @relation(fields: [authorId], references: [id])
-}
-
 model Session {
-  id           String   @id
+  id           String   @id @default(cuid())
   userId       String
   expires      DateTime
   sessionToken String   @unique
   accessToken  String   @unique
   createdAt    DateTime @default(now())
-  updatedAt    DateTime
-  User         User     @relation(fields: [userId], references: [id])
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
 }
 
 model User {
-  id            String    @id
+  id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime?
-  Account       Account[]
-  Post          Post[]
-  Session       Session[]
-  
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  posts Post[] @relation("Posts")
+  likesPosts Like[] @relation("LikedByUser")
+  dislikedPosts Dislike[] @relation("DislikedByUser")
+  viewedPosts View[] @relation("ViewedByUser")
+  likedComments CommentLike[] @relation("CommentLikedByUser")
+  dislikedComments CommentDislike[] @relation("CommentDislikedByUser")
+  commentedPosts Comment[] @relation("CommentedByUser")
+  savedPosts Save[] @relation("SavedByUser")
+  following Follows[] @relation("Following")
+  followed Follows[] @relation("Followed")
 }
 
-model VerificationRequest {
-  id         String   @id
-  identifier String
-  token      String   @unique
-  expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime
-
-  @@unique([identifier, token])
+model Post {
+  id String @id @default(cuid())
+  content String
+  title String
+  images String[] @default([])
+  createdAt DateTime @default(now())
+  author User @relation(name: "Posts",fields: [authorId],references: [id],onDelete: Cascade)
+  likes Like[]
+  Dislikes Dislike[]
+  Views View[]
+  Comment Comment[]
+  savedPosts Save[] @relation("SavedPost")
+  authorId String
 }
+
+model Like{
+  id String @id @default(cuid())
+  post Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  user User @relation(name: "LikedByUser",fields: [userId],references: [id])
+  createdAt DateTime @default(now())
+  postId String
+  userId String
+}
+
+model Dislike{
+  id String @id @default(cuid())
+  post Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  user User @relation(name: "DislikedByUser",fields: [userId],references: [id])
+  createdAt DateTime @default(now())
+  postId String
+  userId String
+}
+
+model View{
+  id String @id @default(cuid())
+  post Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  user User @relation(name: "ViewedByUser",fields: [userId],references: [id])
+  createdAt DateTime @default(now())
+  postId String
+  userId String
+}
+
+model Comment{
+  id String @id @default(cuid())
+  content String
+  post Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+  author User @relation(name: "CommentedByUser",fields: [authorId],references: [id])
+  commentLikes CommentLike[]
+  commentDislikes CommentDislike[]
+  createdAt DateTime @default(now())
+  postId String
+  authorId String
+}
+
+model CommentLike {
+  id String @id @default(cuid())
+  user User @relation(name: "CommentLikedByUser",fields: [userId],references: [id])
+  comment Comment @relation(fields: [commentId],references: [id])
+  createdAt DateTime @default(now())
+  userId String
+  commentId String
+}
+
+model CommentDislike {
+  id String @id @default(cuid())
+  user User @relation(name: "CommentDislikedByUser",fields: [userId],references: [id])
+  comment Comment @relation(fields: [commentId],references: [id])
+  createdAt DateTime @default(now())
+  userId String
+  commentId String
+}
+
+model Save{
+  id String @id @default(cuid())
+  user User @relation(name: "SavedByUser",fields: [userId],references: [id])
+  post Post @relation(name: "SavedPost",fields: [postId],references: [id])
+  userId String
+  postId String
+  createdAt DateTime @default(now())
+}
+
+model Follows {
+  id String @id @default(cuid())
+  following User @relation(name: "Following",fields: [followingId],references: [id])
+  followers User @relation(name: "Followed",fields: [followerId],references: [id])
+  followingId String
+  followerId String  
+}
+
