@@ -7,7 +7,7 @@ export default function PrivyAuthProvider({
   children: React.ReactNode;
 }) {
   return (
-    <PrivyProvider appId={process.env.PRIVY_APP_ID as string}>
+    <PrivyProvider appId={String(process.env.NEXT_PUBLIC_PRIVY_APP_ID)}>
       {children}
     </PrivyProvider>
   );
