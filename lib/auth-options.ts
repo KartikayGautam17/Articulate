@@ -19,4 +19,9 @@ export const authOptions: AuthOptions = {
     }),
   ],
   adapter: PrismaAdapter(prisma),
+  debug: process.env.NODE_ENV === "development",
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
 };
