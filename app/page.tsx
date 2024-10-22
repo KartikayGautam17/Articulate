@@ -30,6 +30,10 @@ export default function Home() {
         <div>Home</div>
         <div>Welcome {session.data?.user?.email}</div>
         <button onClick={HandleSignOut}>Logout</button>
+        <div>
+          This is the home page which will show generic content for logged
+          in/out individuals in the future
+        </div>
       </div>
     );
   }
