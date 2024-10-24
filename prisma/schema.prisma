@@ -92,6 +92,7 @@ model Like{
   createdAt DateTime @default(now())
   postId String
   userId String
+  @@unique([postId,userId])
 }
 
 model Dislike{
@@ -101,6 +102,7 @@ model Dislike{
   createdAt DateTime @default(now())
   postId String
   userId String
+  @@unique([postId,userId])
 }
 
 model View{
@@ -110,7 +112,7 @@ model View{
   createdAt DateTime @default(now())
   postId String
   userId String
-  @@unique([postId,userId])
+  
 }
 
 model Comment{
@@ -130,9 +132,9 @@ model CommentLike {
   user User @relation(name: "CommentLikedByUser",fields: [userId],references: [id])
   comment Comment @relation(fields: [commentId],references: [id])
   createdAt DateTime @default(now())
-  userId String @unique 
+  userId String  
   commentId String
-  
+  @@unique([userId,commentId])
 }
 
 model CommentDislike {
@@ -140,8 +142,9 @@ model CommentDislike {
   user User @relation(name: "CommentDislikedByUser",fields: [userId],references: [id])
   comment Comment @relation(fields: [commentId],references: [id])
   createdAt DateTime @default(now())
-  userId String @unique
+  userId String 
   commentId String
+  @@unique([userId,commentId])
 }
 
 model Save{

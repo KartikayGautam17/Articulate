@@ -37,7 +37,7 @@ export const POST = async (request: Request) => {
       return NextResponse.json({
         success: false,
         reason: "Prisma Error",
-        error: parsedBody.error,
+        error: error,
       });
     }
   }

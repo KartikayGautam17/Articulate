@@ -21,9 +21,13 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const following = await prisma.follows.count({
+      const following = await prisma.follows.findMany({
         where: {
           followerId: body.userId,
+        },
+        select: {
+          followingId: true,
+          following: true,
         },
       });
       return NextResponse.json({
