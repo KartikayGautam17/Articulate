@@ -67,6 +67,7 @@ model User {
   savedPosts Save[] @relation("SavedByUser")
   following Follows[] @relation("Following")
   followed Follows[] @relation("Followed")
+  profile Profile? @relation("UserProfile") 
 }
 
 model Post {
@@ -109,6 +110,7 @@ model View{
   createdAt DateTime @default(now())
   postId String
   userId String
+  @@unique([postId,userId])
 }
 
 model Comment{
@@ -128,8 +130,9 @@ model CommentLike {
   user User @relation(name: "CommentLikedByUser",fields: [userId],references: [id])
   comment Comment @relation(fields: [commentId],references: [id])
   createdAt DateTime @default(now())
-  userId String
+  userId String @unique 
   commentId String
+  
 }
 
 model CommentDislike {
@@ -137,7 +140,7 @@ model CommentDislike {
   user User @relation(name: "CommentDislikedByUser",fields: [userId],references: [id])
   comment Comment @relation(fields: [commentId],references: [id])
   createdAt DateTime @default(now())
-  userId String
+  userId String @unique
   commentId String
 }
 
@@ -148,6 +151,7 @@ model Save{
   userId String
   postId String
   createdAt DateTime @default(now())
+  @@unique([userId,postId])
 }
 
 model Follows {
@@ -155,6 +159,19 @@ model Follows {
   following User @relation(name: "Following",fields: [followingId],references: [id])
   followers User @relation(name: "Followed",fields: [followerId],references: [id])
   followingId String
-  followerId String  
+  followerId String
+  @@unique([followerId,followingId])  
 }
 
+model Profile {
+  id String @id @default(cuid())
+  name String
+  userId String @unique
+  description String?
+  age Int
+  image String?
+  tags String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(name: "UserProfile",fields: [userId],references: [id])
+}
