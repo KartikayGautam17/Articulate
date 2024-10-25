@@ -130,7 +130,7 @@ model Comment{
 model CommentLike {
   id String @id @default(cuid())
   user User @relation(name: "CommentLikedByUser",fields: [userId],references: [id])
-  comment Comment @relation(fields: [commentId],references: [id])
+  comment Comment @relation(fields: [commentId],references: [id],onDelete: Cascade)
   createdAt DateTime @default(now())
   userId String  
   commentId String
@@ -140,7 +140,7 @@ model CommentLike {
 model CommentDislike {
   id String @id @default(cuid())
   user User @relation(name: "CommentDislikedByUser",fields: [userId],references: [id])
-  comment Comment @relation(fields: [commentId],references: [id])
+  comment Comment @relation(fields: [commentId],references: [id],onDelete: Cascade)
   createdAt DateTime @default(now())
   userId String 
   commentId String
@@ -159,8 +159,8 @@ model Save{
 
 model Follows {
   id String @id @default(cuid())
-  following User @relation(name: "Following",fields: [followingId],references: [id])
-  followers User @relation(name: "Followed",fields: [followerId],references: [id])
+  following User @relation(name: "Following",fields: [followingId],references: [id],onDelete: Cascade)
+  followers User @relation(name: "Followed",fields: [followerId],references: [id],onDelete: Cascade)
   followingId String
   followerId String
   @@unique([followerId,followingId])  
@@ -176,5 +176,5 @@ model Profile {
   tags String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user User @relation(name: "UserProfile",fields: [userId],references: [id])
+  user User @relation(name: "UserProfile",fields: [userId],references: [id],onDelete: Cascade)
 }

@@ -2,17 +2,17 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma-adapter";
 
-const FetchFollowersSchema = z.object({
+const DeleteUserSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type FetchFollowersRequestProps = {
+type DeleteUserReqquest = {
   userId: string;
 };
 
 export const POST = async (request: Request) => {
-  const body: FetchFollowersRequestProps = await request.json();
-  const parsedBody = FetchFollowersSchema.safeParse(body);
+  const body: DeleteUserReqquest = await request.json();
+  const parsedBody = DeleteUserSchema.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
@@ -21,17 +21,14 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const followers = await prisma.follows.findMany({
+      const user = await prisma.user.delete({
         where: {
-          followingId: body.userId,
-        },
-        select: {
-          follower: true,
+          id: body.userId,
         },
       });
       return NextResponse.json({
         success: true,
-        followers: followers,
+        user: user,
       });
     } catch (error) {
       return NextResponse.json({

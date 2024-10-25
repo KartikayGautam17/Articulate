@@ -2,13 +2,17 @@ import prisma from "@/lib/prisma-adapter";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-const FetchPostSchema = z.object({});
+const FetchViewedPostsSchema = z.object({
+  userId: z.string().cuid(),
+});
 
-type FetchPostsRequestProps = {};
+type FetchViewedPostsRequestProps = {
+  userId: string;
+};
 
 export const POST = async (request: Request) => {
-  const body: FetchPostsRequestProps = await request.json();
-  const parsedBody = FetchPostSchema.safeParse(body);
+  const body: FetchViewedPostsRequestProps = await request.json();
+  const parsedBody = FetchViewedPostsSchema.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
@@ -17,9 +21,12 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const posts = await prisma.post.findMany({
-        orderBy: {
-          createdAt: "desc",
+      const posts = await prisma.view.findMany({
+        where: {
+          userId: body.userId,
+        },
+        select: {
+          post: true,
         },
       });
       return NextResponse.json({ success: true, posts: posts });
