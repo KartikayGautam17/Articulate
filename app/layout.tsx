@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import { Toaster } from "react-hot-toast";
+import { ThemeWrapper } from "./context/theme-context";
 import SessionAuthContext from "./context/session-context";
 
 export const metadata: Metadata = {
@@ -17,10 +18,17 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body>
-        <SessionAuthContext>
-          <Toaster />
-          {children}
-        </SessionAuthContext>
+        <ThemeWrapper
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange={true}
+          enableSystem={true}
+        >
+          <SessionAuthContext>
+            <Toaster />
+            {children}
+          </SessionAuthContext>
+        </ThemeWrapper>
       </body>
     </html>
   );
