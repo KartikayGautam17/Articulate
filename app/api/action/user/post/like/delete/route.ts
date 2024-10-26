@@ -7,7 +7,7 @@ const DeleteLikeSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type DeleteLikeSchemaProps = {
+export type DeleteLikeSchemaProps = {
   likeId: string;
   userId: string;
 };

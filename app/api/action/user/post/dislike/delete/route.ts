@@ -7,7 +7,7 @@ const DeleteDislikeSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type DeleteDislikeRequest = {
+export type DeleteDislikeRequest = {
   dislikeId: string;
   userId: string;
 };

@@ -6,12 +6,12 @@ const DeleteUserSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type DeleteUserReqquest = {
+export type DeleteUserRequest = {
   userId: string;
 };
 
 export const POST = async (request: Request) => {
-  const body: DeleteUserReqquest = await request.json();
+  const body: DeleteUserRequest = await request.json();
   const parsedBody = DeleteUserSchema.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({

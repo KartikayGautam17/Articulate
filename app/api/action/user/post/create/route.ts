@@ -9,7 +9,7 @@ const CreatePostSchema = z.object({
   images: z.array(z.string().min(1)),
 });
 
-type CreatePostRequestProps = {
+export type CreatePostRequestProps = {
   title: string;
   content: string;
   authorId: string;

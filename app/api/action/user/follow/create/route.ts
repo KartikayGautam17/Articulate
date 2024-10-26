@@ -7,7 +7,7 @@ const FollowSchema = z.object({
   targetId: z.string().cuid(),
 });
 
-type FollowRequestProps = {
+export type FollowRequestProps = {
   userId: string;
   targetId: string;
 };

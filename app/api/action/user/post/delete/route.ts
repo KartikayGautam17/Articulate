@@ -7,7 +7,7 @@ const DeletePostSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type DeletePostRequestProps = {
+export type DeletePostRequestProps = {
   postId: string;
   userId: string;
 };

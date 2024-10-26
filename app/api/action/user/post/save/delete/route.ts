@@ -7,7 +7,7 @@ const UnsavePostSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type UnsavePostSchemaProps = {
+export type UnsavePostSchemaProps = {
   saveId: string;
   userId: string;
 };

@@ -139,7 +139,7 @@ export const getUserPostsSaved = async ({
   const response = await axios.post("api/fetch/posts/u/saved", { userId });
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
-    return { success: true, data: response_data.postArray };
+    return { success: true, data: response_data.saveArray };
   }
   return {
     success: false,

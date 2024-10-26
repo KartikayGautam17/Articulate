@@ -7,7 +7,7 @@ const DeleteCommentDislikeSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type DeleteCommentDislikeSchemaProps = {
+export type DeleteCommentDislikeSchemaProps = {
   commentDislikeId: string;
   userId: string;
 };

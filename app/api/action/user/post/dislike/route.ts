@@ -7,7 +7,7 @@ const DislikePostSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type DislikePostRequestProps = {
+export type DislikePostRequestProps = {
   postId: string;
   userId: string;
 };

@@ -11,7 +11,7 @@ const ProfileSchema = z.object({
   tags: z.array(z.string()),
 });
 
-type ProfileRequestProps = {
+export type UpdateProfileRequestProps = {
   userId: string;
   name: string;
   description: string;
@@ -21,12 +21,12 @@ type ProfileRequestProps = {
 };
 
 export const POST = async (request: Request) => {
-  const body: ProfileRequestProps = await request.json();
+  const body: UpdateProfileRequestProps = await request.json();
   const parsedBody = ProfileSchema.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
-      reasons: "Invalid Request",
+      reason: "Invalid Request",
       error: parsedBody.error,
     });
   } else {

@@ -7,7 +7,7 @@ const LikeCommentSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type LikeCommentRequestProps = {
+export type LikeCommentRequestProps = {
   commentId: string;
   userId: string;
 };
@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
           userId: body.userId,
         },
       });
-      return NextResponse.json({ success: true, like: like });
+      return NextResponse.json({ success: true, commentLike: like });
     } catch (error) {
       return NextResponse.json({
         success: false,

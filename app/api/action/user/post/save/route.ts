@@ -7,7 +7,7 @@ const SavePostSchema = z.object({
   postId: z.string().cuid(),
 });
 
-type SavePostRequest = {
+export type SavePostRequest = {
   userId: string;
   postId: string;
 };
@@ -23,13 +23,13 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const savedPost = await prisma.save.create({
+      const save = await prisma.save.create({
         data: {
           userId: body.userId,
           postId: body.postId,
         },
       });
-      return NextResponse.json({ success: true, savedPost: savedPost });
+      return NextResponse.json({ success: true, save: save });
     } catch (error) {
       return NextResponse.json({
         success: false,

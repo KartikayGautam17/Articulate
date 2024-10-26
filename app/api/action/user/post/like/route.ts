@@ -7,7 +7,7 @@ const LikePostSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type LikePostRequestProps = {
+export type LikePostRequestProps = {
   postId: string;
   userId: string;
 };

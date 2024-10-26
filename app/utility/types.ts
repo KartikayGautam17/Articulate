@@ -15,9 +15,10 @@ import {
   Like,
   Dislike,
   View,
-  Save,
   CommentDislike,
   CommentLike,
+  Save,
+  User,
 } from "@prisma/client";
 
 export type ResponseDataProps =
@@ -34,6 +35,13 @@ export type fetchApiResponseProps = {
   reason?: string;
 };
 
+export type actionApiResponseProps = {
+  success: boolean;
+  data: actionApiData;
+  error?: any;
+  reason?: string;
+};
+
 type ResponseData = {
   profile?: Profile;
   followersArray?: Follows[];
@@ -45,6 +53,17 @@ type ResponseData = {
   dislikeArray?: Dislike[];
   commentLikeArray?: CommentLike[];
   commentDislikeArray?: CommentDislike[];
+  saveArray?: Save[];
+  user?: User;
+  follow?: Follows;
+  post?: Post;
+  view?: View;
+  save?: Save;
+  like?: Like;
+  dislike?: Dislike;
+  comment: Comment;
+  commentLike: CommentLike;
+  commentDislike: CommentDislike;
 };
 
 type fetchApiData =
@@ -57,7 +76,11 @@ type fetchApiData =
   | Comment[]
   | View
   | View[]
+  | Save
+  | Save[]
   | CommentLike[]
   | CommentDislike[]
   | undefined
   | null;
+
+type actionApiData = fetchApiData | User | CommentLike | CommentDislike;

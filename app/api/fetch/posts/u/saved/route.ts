@@ -27,9 +27,10 @@ export const POST = async (request: Request) => {
         },
         select: {
           post: true,
+          id: true,
         },
       });
-      return NextResponse.json({ success: true, postArray: posts });
+      return NextResponse.json({ success: true, saveArray: posts });
     } catch (error) {
       return NextResponse.json({
         success: false,

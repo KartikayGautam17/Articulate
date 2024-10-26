@@ -8,7 +8,7 @@ const DeleteFollowSchema = z.object({
   targetId: z.string().cuid(),
 });
 
-type DeleteFollowRequestProps = {
+export type DeleteFollowRequestProps = {
   followId: string;
   userId: string;
   targetId: string;

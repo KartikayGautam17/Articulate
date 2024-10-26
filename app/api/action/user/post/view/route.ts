@@ -7,13 +7,13 @@ const ViewPostSchema = z.object({
   postId: z.string().cuid(),
 });
 
-type ViewRequestHeader = {
+export type ViewPostRequest = {
   userId: string;
   postId: string;
 };
 
 export const POST = async (request: Request) => {
-  const body: ViewRequestHeader = await request.json();
+  const body: ViewPostRequest = await request.json();
   const parsedBody = ViewPostSchema.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({

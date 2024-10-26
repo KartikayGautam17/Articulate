@@ -8,7 +8,7 @@ const CreateCommentSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type CreateCommentRequestProps = {
+export type CreateCommentRequestProps = {
   content: string;
   postId: string;
   userId: string;

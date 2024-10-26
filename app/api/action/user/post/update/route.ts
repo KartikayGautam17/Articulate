@@ -10,7 +10,7 @@ const UpdatePostSchema = z.object({
   images: z.array(z.string().min(1)),
 });
 
-type UpdatePostRequestProps = {
+export type UpdatePostRequestProps = {
   postId: string;
   userId: string;
   content: string;
