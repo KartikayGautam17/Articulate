@@ -6,7 +6,7 @@ const FetchPostDisikesSchema = z.object({
   postId: z.string().cuid(),
 });
 
-type FetchPostDisikesRequestProps = {
+export type FetchPostDisikesRequestProps = {
   postId: string;
 };
 
@@ -28,7 +28,7 @@ export const POST = async (request: Request) => {
       });
       return NextResponse.json({
         success: true,
-        postLikes: postDislikes,
+        dislikeArray: postDislikes,
       });
     } catch (error) {
       return NextResponse.json({

@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma-adapter";
 const FetchPostViewsSchema = z.object({
   postId: z.string().cuid(),
 });
-type FetchPostViewsRequestProps = {
+export type FetchPostViewsRequestProps = {
   postId: string;
 };
 
@@ -24,6 +24,10 @@ export const POST = async (request: Request) => {
         where: {
           postId: body.postId,
         },
+      });
+      return NextResponse.json({
+        success: true,
+        viewArray: views,
       });
     } catch (error) {
       return NextResponse.json({

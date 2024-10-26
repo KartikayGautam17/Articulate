@@ -6,7 +6,7 @@ const FetchFollowingSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type FetchFollowingRequestProps = {
+export type FetchFollowingRequestProps = {
   userId: string;
 };
 
@@ -21,18 +21,17 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const following = await prisma.follows.findMany({
+      const followingArray = await prisma.follows.findMany({
         where: {
           followerId: body.userId,
         },
         select: {
-          followingId: true,
           following: true,
         },
       });
       return NextResponse.json({
         success: true,
-        following: following,
+        followingArray: followingArray,
       });
     } catch (error) {
       return NextResponse.json({

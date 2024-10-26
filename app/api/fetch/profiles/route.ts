@@ -6,7 +6,7 @@ const FetchUserProfile = z.object({
   userId: z.string().cuid(),
 });
 
-type FetchUserProfileRequestProps = {
+export type FetchUserProfileRequestProps = {
   userId: string;
 };
 
@@ -27,7 +27,7 @@ export const POST = async (request: Request) => {
         },
       });
       return NextResponse.json({
-        success: false,
+        success: true,
         profile: profile,
       });
     } catch (error) {

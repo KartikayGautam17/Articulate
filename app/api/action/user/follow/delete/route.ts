@@ -2,17 +2,21 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma-adapter";
 
-const FetchCommentsSchema = z.object({
-  postId: z.string().cuid(),
+const DeleteFollowSchema = z.object({
+  followId: z.string().cuid(),
+  userId: z.string().cuid(),
+  targetId: z.string().cuid(),
 });
 
-export type FetchCommentsRequestProps = {
-  postId: string;
+type DeleteFollowRequestProps = {
+  followId: string;
+  userId: string;
+  targetId: string;
 };
 
 export const POST = async (request: Request) => {
-  const body: FetchCommentsRequestProps = await request.json();
-  const parsedBody = FetchCommentsSchema.safeParse(body);
+  const body: DeleteFollowRequestProps = await request.json();
+  const parsedBody = DeleteFollowSchema.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
@@ -21,14 +25,16 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const comments = await prisma.comment.findMany({
+      const follow = await prisma.follows.delete({
         where: {
-          postId: body.postId,
+          id: body.followId,
+          followerId: body.userId,
+          followingId: body.targetId,
         },
       });
       return NextResponse.json({
         success: true,
-        commentArray: comments,
+        follow: follow,
       });
     } catch (error) {
       return NextResponse.json({

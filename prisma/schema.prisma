@@ -160,7 +160,7 @@ model Save{
 model Follows {
   id String @id @default(cuid())
   following User @relation(name: "Following",fields: [followingId],references: [id],onDelete: Cascade)
-  followers User @relation(name: "Followed",fields: [followerId],references: [id],onDelete: Cascade)
+  follower User @relation(name: "Followed",fields: [followerId],references: [id],onDelete: Cascade)
   followingId String
   followerId String
   @@unique([followerId,followingId])  

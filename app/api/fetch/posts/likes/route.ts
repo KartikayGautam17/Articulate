@@ -6,7 +6,7 @@ const FetchPostLikesSchema = z.object({
   postId: z.string().cuid(),
 });
 
-type FetchPostLikesRequestProps = {
+export type FetchPostLikesRequestProps = {
   postId: string;
 };
 

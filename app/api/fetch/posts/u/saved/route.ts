@@ -6,7 +6,7 @@ const FetchSavedPostSchema = z.object({
   userId: z.string().cuid(),
 });
 
-type FetchSavedPostsRequestProps = {
+export type FetchSavedPostsRequestProps = {
   userId: string;
 };
 
@@ -16,7 +16,7 @@ export const POST = async (request: Request) => {
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
-      reasons: "Invalid Request Body",
+      reason: "Invalid Request Body",
       error: parsedBody.error,
     });
   } else {
@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
           post: true,
         },
       });
-      return NextResponse.json({ success: true, posts: posts });
+      return NextResponse.json({ success: true, postArray: posts });
     } catch (error) {
       return NextResponse.json({
         success: false,

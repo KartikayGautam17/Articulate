@@ -6,7 +6,7 @@ const FetchCommentLikes = z.object({
   commentId: z.string().cuid(),
 });
 
-type FetchCommentLikesRequestProps = {
+export type FetchCommentLikesRequestProps = {
   commentId: string;
 };
 
@@ -28,7 +28,7 @@ export const POST = async (request: Request) => {
       });
       return NextResponse.json({
         success: true,
-        likes: commentLikes,
+        commentLikeArray: commentLikes,
       });
     } catch (error) {
       return NextResponse.json({
