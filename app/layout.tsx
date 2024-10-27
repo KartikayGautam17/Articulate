@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import { ThemeWrapper } from "./context/theme-context";
 import SessionAuthContext from "./context/session-context";
+import { UserProvider } from "./context/user-context";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,8 +26,10 @@ export default function RootLayout({
           enableSystem={true}
         >
           <SessionAuthContext>
-            <Toaster />
-            {children}
+            <UserProvider>
+              <Toaster />
+              {children}
+            </UserProvider>
           </SessionAuthContext>
         </ThemeWrapper>
       </body>
