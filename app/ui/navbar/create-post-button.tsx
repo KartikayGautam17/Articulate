@@ -5,12 +5,12 @@ import { IconPlus } from "@tabler/icons-react";
 export const CreatePostButton = () => {
   return (
     <Button
-      className="w-[90px] h-full flex justify-around items-center border-2 rounded-[16px] p-3 
-    bg-transparent text-black hover:bg-gray-200
-    outline-none dark:text-white dark:hover:bg-gray-600 mx-2 border-gray-400"
+      className="w-[90px] h-full flex justify-center items-center p-2 
+    bg-transparent hover:bg-gray-200
+    outline-none  dark:hover:bg-gray-600 mx-2 rounded-[16px] "
     >
-      <IconPlus className="opacity-75 w-[24px] h-[24px] " />
-      <div className="font-light">Create</div>
+      <IconPlus className=" dark:text-white text-black" />
+      <div className="font-light text-black dark:text-white">Create</div>
     </Button>
   );
 };

@@ -6,7 +6,7 @@ import { useRef } from "react";
 const iconClassname = "w-[24px] h-[24px] ";
 
 const buttonClassname =
-  "h-full mr-2 w-[40px] w-full flex items-center justify-center dark:hover:bg-gray-600 hover:bg-gray-200 rounded-[12px] border-[2px] border-gray-400 ";
+  "h-full mr-2 w-[40px] w-full flex items-center justify-center dark:hover:bg-gray-600 hover:bg-gray-200 rounded-[12px]  ";
 
 export const ThemeToggle = () => {
   const themeSwitch = useTheme();
