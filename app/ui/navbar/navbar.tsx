@@ -12,7 +12,7 @@ const roboto = ABeeZee({
 
 export const Navbar = () => {
   return (
-    <div className="w-full h-var(--navbarHeight) px-[16px] py-[10px] border-2 box-border border-t-0 border-l-0 border-r-0">
+    <div className="w-full h-[var(--navbarHeight)] px-[16px] py-[10px] border-2 box-border border-t-0 border-l-0 border-r-0">
       <div className="w-full h-full flex justify-between items-center">
         <div id="logo" className={roboto.className}>
           <Logo />

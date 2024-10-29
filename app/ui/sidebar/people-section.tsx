@@ -1,4 +1,4 @@
-import { IconUser, IconUserCheck } from "@tabler/icons-react";
+import { IconUserCheck, IconUsers } from "@tabler/icons-react";
 import {
   Accordion,
   AccordionItem,
@@ -22,7 +22,7 @@ export const PeopleSection = () => {
         <AccordionContent className="flex flex-col gap-[5px] px-[10px] mt-2">
           <Button className={btnClass}>
             <div className="px-2 flex justify-start items-center gap-3">
-              <IconUser />
+              <IconUsers />
               <span>Followers</span>
             </div>
           </Button>
