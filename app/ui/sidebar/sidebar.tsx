@@ -4,7 +4,7 @@ import { PostSection } from "./post-section";
 import { SearchPeopleDialog } from "./search-people";
 export const Sidebar = () => {
   return (
-    <div className="w-[275px] h-full border-2 border-y-0 p-[15px] px-[20px] ">
+    <div className="w-[275px] h-full border-2 border-y-0 p-[15px] px-[20px] overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark">
       <div
         id="groups-container"
         className="flex flex-col  justify-start w-full items-center"

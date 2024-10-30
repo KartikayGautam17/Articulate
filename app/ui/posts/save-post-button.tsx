@@ -23,7 +23,8 @@ export const SavePostButton = ({
           ),
         });
       }}
-      className="w-[100px] h-fit bg-transparent text-white hover:bg-gray-800 font-light text-sm py-2"
+      className="w-[100px] h-fit bg-transparent text-black hover:bg-gray-200 
+      font-light text-sm py-2 dark:hover:bg-gray-800 dark:text-white"
     >
       <div className="w-full flex justify-around items-center">
         <IconBookmark className="w-[24px] h-[24px]" />

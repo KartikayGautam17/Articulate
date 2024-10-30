@@ -29,7 +29,7 @@ export default function Home() {
     };
 
     return (
-      <div>
+      <div className="overflow-hidden">
         <Navbar />
         <div className="w-full flex mContainer justify-between">
           <Sidebar />

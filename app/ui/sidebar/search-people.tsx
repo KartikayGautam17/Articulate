@@ -42,7 +42,7 @@ export const SearchPeopleDialog = () => {
   return (
     <Dialog>
       <DialogTrigger className="w-full">
-        <div className="py-2 px-2 text-white bg-gray-600 hover:ring-1 dark:text-black dark:bg-gray-200  dark:ring-white rounded-md w-full">
+        <div className="py-2 px-2 text-white bg-gray-600 hover:ring-1 dark:text-black dark:bg-gray-100  dark:ring-white rounded-md w-full">
           <div className="px-2 flex justify-start items-center gap-3 text-base font-normal">
             <IconUserSearch width={16} height={16} />
             <span>Search Users</span>
