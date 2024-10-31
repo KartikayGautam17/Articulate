@@ -6,20 +6,12 @@ import { useRouter } from "next/navigation";
 import { Navbar } from "./ui/navbar/navbar";
 import { Sidebar } from "./ui/sidebar/sidebar";
 import { Postswindow } from "./ui/posts/post-window";
-import { Profile } from "./ui/profile/profile";
-// For the moment being I am making the home page as protected,
-// I will change this in future in order for unauthenticated users to view the
-// general posts as well. This is to implement session checking with next-auth for now.
+import { ProfilePlaceHolder } from "./ui/profile/profile-placeholder";
 
 export default function Home() {
   const router = useRouter();
   const session = useSession();
 
-  useEffect(() => {
-    if (session.status === "unauthenticated") {
-      router.push("/login/");
-    }
-  }, [session]);
   if (session.status === "loading") {
     return <div>Loading</div>;
   } else if (session.status === "authenticated") {
@@ -34,7 +26,7 @@ export default function Home() {
         <div className="w-full flex mContainer justify-between">
           <Sidebar />
           <Postswindow />
-          <Profile />
+          <ProfilePlaceHolder />
         </div>
       </div>
     );

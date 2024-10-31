@@ -4,7 +4,7 @@ export const PostImage = ({ src }: { src: string }) => {
   return (
     <AspectRatio
       ratio={16 / 9}
-      className="bg-black/50 rounded-[37px] py-2 my-2"
+      className="bg-black/50 rounded-[37px] py-2 my-4"
       onClick={() => {
         console.log(400);
       }}

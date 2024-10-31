@@ -10,7 +10,7 @@ import { DislikeButton } from "./dislike-button";
 import { CommentButton } from "./comment-button";
 import { useEffect, useState } from "react";
 const btnClass =
-  "flex justify-center items-center w-fit h-full bg-transparent text-black border-2 rounded-full hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800 ";
+  "flex justify-center items-center w-[75px] h-full bg-transparent text-black border-2 rounded-full hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800 ";
 
 export const PostFooter = ({
   views,
@@ -41,7 +41,7 @@ export const PostFooter = ({
     <div className="my-2 w-full h-[30px] flex gap-2 justify-start items-center">
       <div
         id="views"
-        className="flex justify-center items-center w-fit h-full text-black font-medium bg-transparent rounded-full border-2 gap-1 px-3 dark:text-gray-200 cursor-default"
+        className="flex justify-center items-center w-[75px] h-full text-black font-medium bg-transparent rounded-full border-2 gap-1 px-3 dark:text-gray-200 cursor-default"
       >
         <IconEye width={16} height={16} />
         <span className="text-sm tracking-normal">{views}</span>
