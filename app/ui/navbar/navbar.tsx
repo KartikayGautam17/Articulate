@@ -10,16 +10,20 @@ const roboto = ABeeZee({
   weight: ["400"],
 });
 
-export const Navbar = () => {
+export const Navbar = ({ searchBar = true }: { searchBar?: boolean }) => {
   return (
     <div className="w-full h-[var(--navbarHeight)] px-[16px] py-[10px] border-2 box-border border-t-0 border-l-0 border-r-0">
       <div className="w-full h-full flex justify-between items-center">
         <div id="logo" className={roboto.className}>
           <Logo />
         </div>
-        <div id="search_bar">
-          <SearchBar />
-        </div>
+        {searchBar ? (
+          <div id="search_bar">
+            <SearchBar />
+          </div>
+        ) : (
+          <div></div>
+        )}
         <div id="profile" className="flex justify-between h-[36px]">
           <div id="theme-toggle">
             <ThemeToggle />

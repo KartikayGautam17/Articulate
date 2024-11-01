@@ -1,9 +1,6 @@
 import { AuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 
-import RedditProvider from "next-auth/providers/reddit";
-//gonna add reddit provider as well
-
 import GithubProvider from "next-auth/providers/github";
 import prisma from "./prisma-adapter";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -18,6 +15,12 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.DISCORD_APP_SECRET as string,
     }),
   ],
+  callbacks: {
+    async session({ session }) {
+      session.user.id = "Your Custom Object";
+      return session;
+    },
+  },
   adapter: PrismaAdapter(prisma),
   debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
@@ -25,3 +28,14 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
 };
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      name: string | null;
+      email: string | null;
+      image: string | null;
+      id: string | null;
+    };
+  }
+}
