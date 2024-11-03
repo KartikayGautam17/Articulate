@@ -61,9 +61,10 @@ type ResponseData = {
   save?: Save;
   like?: Like;
   dislike?: Dislike;
-  comment: Comment;
-  commentLike: CommentLike;
-  commentDislike: CommentDislike;
+  comment?: Comment;
+  commentLike?: CommentLike;
+  commentDislike?: CommentDislike;
+  userId?: User;
 };
 
 type fetchApiData =
@@ -80,6 +81,7 @@ type fetchApiData =
   | Save[]
   | CommentLike[]
   | CommentDislike[]
+  | User
   | undefined
   | null;
 

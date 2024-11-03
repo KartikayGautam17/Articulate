@@ -11,12 +11,11 @@ export const ProfileLinks = ({
   return (
     <div className="text-center">
       <Label className="text-base font-medium">
-        <div className="flex justify-center gap-1 border-b-2">
-          <span>Links</span>
+        <div className="flex justify-center gap-1">
           <IconLink />
         </div>
       </Label>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center font-light w-full overflow-x-clip">
         {links.map((val, i) => {
           return (
             <Link

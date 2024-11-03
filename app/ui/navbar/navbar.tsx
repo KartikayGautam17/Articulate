@@ -1,7 +1,7 @@
 import { SearchBar } from "./search-bar";
 import { Logo } from "./logo";
 import { CreatePostButton } from "./create-post-button";
-import { Avatar } from "./avatar";
+import { UserAvatar } from "./avatar";
 import { ABeeZee } from "next/font/google";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -10,7 +10,15 @@ const roboto = ABeeZee({
   weight: ["400"],
 });
 
-export const Navbar = ({ searchBar = true }: { searchBar?: boolean }) => {
+export const Navbar = ({
+  searchBar = true,
+  createPostButton = true,
+  id,
+}: {
+  searchBar?: boolean;
+  createPostButton?: boolean;
+  id: string | null | undefined;
+}) => {
   return (
     <div className="w-full h-[var(--navbarHeight)] px-[16px] py-[10px] border-2 box-border border-t-0 border-l-0 border-r-0">
       <div className="w-full h-full flex justify-between items-center">
@@ -28,11 +36,15 @@ export const Navbar = ({ searchBar = true }: { searchBar?: boolean }) => {
           <div id="theme-toggle">
             <ThemeToggle />
           </div>
-          <div id="create_post">
-            <CreatePostButton />
-          </div>
+          {createPostButton ? (
+            <div id="create_post">
+              <CreatePostButton id={id} />
+            </div>
+          ) : (
+            <></>
+          )}
           <div id="user_profile">
-            <Avatar />
+            <UserAvatar />
           </div>
         </div>
       </div>

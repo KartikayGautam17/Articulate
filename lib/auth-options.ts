@@ -1,9 +1,24 @@
+import axios from "axios";
 import { AuthOptions } from "next-auth";
+
 import DiscordProvider from "next-auth/providers/discord";
 
 import GithubProvider from "next-auth/providers/github";
 import prisma from "./prisma-adapter";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { getUserIdbyEmail } from "@/app/utility/fetch";
+import { User } from "@prisma/client";
+
+export const utilUserIdbyEmail = async (email: string) => {
+  const response = await getUserIdbyEmail({ email });
+  console.log(response);
+  if (!response.success) {
+    console.error("NOT SUCCESS *------*");
+    return { error: response.error, reason: response.reason };
+  }
+  return { user: response.data as User };
+};
+
 export const authOptions: AuthOptions = {
   providers: [
     GithubProvider({
@@ -17,7 +32,19 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session }) {
-      session.user.id = "Your Custom Object";
+      if (session.user.email) {
+        const User = await prisma.user.findUnique({
+          where: {
+            email: session.user.email,
+          },
+        });
+        if (User) {
+          session.user.id = User.id;
+        } else {
+          session.user.id = undefined;
+        }
+      }
+
       return session;
     },
   },
@@ -35,7 +62,7 @@ declare module "next-auth" {
       name: string | null;
       email: string | null;
       image: string | null;
-      id: string | null;
+      id: string | null | undefined;
     };
   }
 }

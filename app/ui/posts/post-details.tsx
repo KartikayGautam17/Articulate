@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,24 +15,28 @@ export const PostDetails = ({
   datePosted,
   name,
   avatar,
+  userId,
 }: {
   datePosted: string;
   name: string;
   avatar: string;
+  userId: string;
 }) => {
   const [popoverOpenState, setPopoverOpenState] = useState(false);
   return (
     <div className="border-b-2 w-full h-[40px]   flex items-center justify-between gap-2 text-sm">
       <div className="flex items-center">
-        <div className="inline-flex justify-center gap-2 items-center cursor-pointer">
-          <Avatar className="w-[30px] h-[30px]">
-            <AvatarImage src={avatar} className="" />
-            <AvatarFallback>{name.at(0)}</AvatarFallback>
-          </Avatar>
-          <Label className="text-sm font-light cursor-pointer hover:underline">
-            {name}
-          </Label>
-        </div>
+        <Link href={"/user/" + userId}>
+          <div className="inline-flex justify-center gap-2 items-center cursor-pointer">
+            <Avatar className="w-[30px] h-[30px]">
+              <AvatarImage src={avatar} className="" />
+              <AvatarFallback>{name.at(0)}</AvatarFallback>
+            </Avatar>
+            <Label className="text-sm font-light cursor-pointer hover:underline">
+              {name}
+            </Label>
+          </div>
+        </Link>
         <div className="inline-flex justify-center gap-2 items-center">
           <span className="ml-2">•</span>
           <Label className="font-light text-sm">{datePosted}</Label>

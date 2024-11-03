@@ -5,29 +5,32 @@ import {
   CardTitle,
   CardHeader,
   CardContent,
-  CardDescription,
   CardFooter,
 } from "@/components/ui/card";
 
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
 import { EditProfileButton } from "./edit-profile-button";
+
+import { useState } from "react";
+import { MainProfileUserFollowButton } from "./follow-profile-button";
 
 const sampleData = {
   name: "Kartikay Gautam",
   image: "https://github.com/shadcn.png",
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis auctor justo eget scelerisque. Nulla vehicula et arcu sit amet convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam volutpat magna sed urna elementum gravida. Pellentesque venenatis nulla sit amet nisi porta scelerisque non eget neque. Fusce at nulla.",
-  links: ["instagram.com", "youtube.com", "reddit.com"],
+  links: ["instagram.com", "https://www.youtube.com/", "reddit.com"],
 };
 const ownProfile = true;
+
 const contentItemClass = "flex flex-col justify-center gap-3";
 
 export const ProfileMain = () => {
   return (
-    <div className="border-x-2 w-[800px] p-5">
-      <Card className="border-2">
+    <div className=" w-[800px] p-5 pt-0">
+      <Card className="border-t-0 rounded-none">
         <CardHeader className="mb-2">
           <CardTitle>Profile</CardTitle>
         </CardHeader>
@@ -57,12 +60,13 @@ export const ProfileMain = () => {
             <Label>Links</Label>
             <div className={contentItemClass}>
               {sampleData.links.map((val) => (
-                <Link
+                <a
+                  target="_blank"
                   href={val}
                   className={contentItemClass + " gap-3 hover:underline"}
                 >
                   {val}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -76,7 +80,9 @@ export const ProfileMain = () => {
             />
           </CardFooter>
         ) : (
-          <></>
+          <CardFooter>
+            <MainProfileUserFollowButton username={sampleData.name} />
+          </CardFooter>
         )}
       </Card>
     </div>

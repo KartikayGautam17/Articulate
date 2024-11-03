@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { IconReload } from "@tabler/icons-react";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { Textarea } from "@/components/ui/textarea";
 export const EditProfileButton = ({
   name,
   description,
@@ -68,9 +69,9 @@ export const EditProfileButton = ({
         </div>
         <div className="flex justify-start items-baseline px-8  gap-4">
           <Label className="min-w-20 font-light">Description</Label>
-          <span className="border-2 p-2 rounded-md overflow-y-auto max-h-32">
+          <Textarea className="border-2 p-2 rounded-md overflow-y-auto max-h-32 resize-none focus-visible:ring-0 focus-visible:ring-offset-0">
             {description}
-          </span>
+          </Textarea>
         </div>
         <div className="flex justify-start items-baseline px-8  gap-4">
           <Label className="min-w-20 font-light">Links</Label>

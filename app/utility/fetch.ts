@@ -14,10 +14,40 @@ import { FetchPostLikesRequestProps } from "../api/fetch/posts/likes/route";
 import { FetchPostDisikesRequestProps } from "../api/fetch/posts/dislikes/route";
 import { FetchCommentLikesRequestProps } from "../api/fetch/posts/comments/likes/route";
 import { FetchCommentDislikesRequestProps } from "../api/fetch/posts/comments/dislikes/route";
+import { FetchUserIdRequestProps } from "../api/fetch/user/route";
 
 /*
  ***** API CALLS TO FETCH USER RELATED DATA *****
  */
+
+/**
+ * Gets the User Profile [api/fetch/user].
+ *
+ * Requires email as string and returns the user profile if it exists,
+ * otherwise returns null
+ *
+ * @returns userId
+ * @param {string} {email}
+ */
+
+export const getUserIdbyEmail = async ({
+  email,
+}: FetchUserIdRequestProps): Promise<fetchApiResponseProps> => {
+  console.log("Function begin");
+  console.log(email);
+  const response = await axios.post("/api/fetch/user", { email });
+  const response_data: ResponseDataProps = response.data;
+  console.log("RESPONSE DATA -*******- " + response_data);
+  if (response_data.success) {
+    return { success: true, data: response_data.userId };
+  }
+  return {
+    success: false,
+    data: null,
+    error: response_data.error,
+    reason: response_data.reason,
+  };
+};
 
 /**
  * Gets the User Profile [api/fetch/profiles].

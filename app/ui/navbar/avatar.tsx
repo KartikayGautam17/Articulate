@@ -1,9 +1,19 @@
+"use client";
 import { IconUserCircle } from "@tabler/icons-react";
+import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
-export const Avatar = () => {
+export const UserAvatar = () => {
+  const session = useSession();
   return (
-    <button className="h-full text-center mx-2">
-      <IconUserCircle className="w-[36px] h-[36px] text-gray-600 dark:text-gray-200" />
-    </button>
+    <Link href={"/user/profile/"}>
+      <Avatar>
+        <AvatarImage src={session?.data?.user.image as string} />
+        <AvatarFallback>
+          {session.data?.user.name?.substring(0, 2).toUpperCase()}
+        </AvatarFallback>
+      </Avatar>
+    </Link>
   );
 };

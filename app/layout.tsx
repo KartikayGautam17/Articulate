@@ -3,7 +3,7 @@ import "@/app/globals.css";
 
 import { ThemeWrapper } from "./context/theme-context";
 import SessionAuthContext from "./context/session-context";
-
+import UserProvider from "./context/user-context";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
@@ -27,8 +27,10 @@ export default function RootLayout({
           enableSystem={true}
         >
           <SessionAuthContext>
-            {children}
-            <Toaster />
+            <UserProvider>
+              {children}
+              <Toaster />
+            </UserProvider>
           </SessionAuthContext>
         </ThemeWrapper>
       </body>

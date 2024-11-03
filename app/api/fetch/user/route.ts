@@ -2,18 +2,18 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma-adapter";
 
-const FetchUserProfile = z.object({
-  userId: z.string().cuid(),
+const FetchUserIdbyEmail = z.object({
+  email: z.string().email(),
 });
 
-export type FetchUserProfileRequestProps = {
-  userId?: string;
-  email?: string;
+export type FetchUserIdRequestProps = {
+  email: string;
 };
 
 export const POST = async (request: Request) => {
-  const body: FetchUserProfileRequestProps = await request.json();
-  const parsedBody = FetchUserProfile.safeParse(body);
+  const body: FetchUserIdRequestProps = await request.json();
+  console.log("BODY JSON " + body);
+  const parsedBody = FetchUserIdbyEmail.safeParse(body);
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
@@ -22,14 +22,17 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const profile = await prisma.profile.findUnique({
+      const userId = await prisma.user.findUnique({
         where: {
-          userId: body.userId,
+          email: body.email,
+        },
+        select: {
+          id: true,
         },
       });
       return NextResponse.json({
         success: true,
-        profile: profile,
+        userId: userId,
       });
     } catch (error) {
       return NextResponse.json({
@@ -39,4 +42,8 @@ export const POST = async (request: Request) => {
       });
     }
   }
+};
+
+export const GET = async () => {
+  return NextResponse.json({ a: "abcd" });
 };

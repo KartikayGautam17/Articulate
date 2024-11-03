@@ -15,7 +15,7 @@ export const FollowUserButton = ({
   const { toast } = useToast();
   return (
     <Button
-      className="w-full h-fit p-2 bg-gray-600 hover:ring-1 hover:bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-200"
+      className="w-full h-fit  bg-gray-600 hover:ring-1 hover:bg-gray-600 dark:bg-gray-100 dark:hover:bg-gray-200"
       onClick={() => {
         console.log(following);
         if (!following) {

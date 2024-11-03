@@ -25,10 +25,10 @@ export const PostComment = ({
     }
   }, [isDisliked]);
   return (
-    <div className="w-full flex flex-col min-h-[100px] hover:bg-gray-100 dark:hover:bg-gray-900">
+    <div className="w-full flex flex-col min-h-[100px] hover:bg-gray-100 dark:hover:bg-gray-900 cursor-auto">
       <div
         id="Header"
-        className="flex justify-start items-center text-sm font-light gap-1"
+        className="flex justify-start items-center text-sm font-light gap-2 p-2 rounded-md"
       >
         <Avatar className="w-[24px] h-[24px]">
           <AvatarImage src={img} />
@@ -36,12 +36,11 @@ export const PostComment = ({
         </Avatar>
         <Link
           href={"pass commentid then fetch the user"}
-          className="hover:underline"
+          className="hover:underline font-normal"
         >
           <span>{name}</span>
         </Link>
-        <span>•</span>
-        <span className="">{postedAgo}</span>
+        <span className="">• {postedAgo}</span>
       </div>
       <div id="Content" className="pl-[28px] text-sm">
         {content}

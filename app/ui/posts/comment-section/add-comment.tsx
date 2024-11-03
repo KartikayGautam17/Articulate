@@ -8,9 +8,8 @@ export const AddComment = () => {
       <Textarea
         placeholder="Add a Comment..."
         className="min-h-4 h-full max-h-[80px]  focus-visible:ring-0 rounded-none pr-16 overflow-y-hidden my-0"
-      >
-        <span>Hi There</span>
-      </Textarea>
+        defaultValue={""}
+      ></Textarea>
       <Button
         variant={"destructive"}
         className="absolute right-0 bottom-0 h-full rounded-sm border-b-[1px] dark:bg-sky-500 "

@@ -24,7 +24,7 @@ export default function AuthPage() {
     }
   }, [session]);
   const HandleSocialSignIn = async (social: "discord" | "github") => {
-    await signIn(social, { redirect: false, callbackUrl: "/user" });
+    await signIn(social, { redirect: false, callbackUrl: "/" });
   };
 
   return (
