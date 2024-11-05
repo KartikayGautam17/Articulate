@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { IconThumbUp, IconThumbUpFilled } from "@tabler/icons-react";
+import {
+  IconRotate2,
+  IconThumbUp,
+  IconThumbUpFilled,
+} from "@tabler/icons-react";
 export const LikeButton = ({
   btnClass,
   data: likes,

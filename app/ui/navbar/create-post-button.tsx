@@ -5,8 +5,8 @@ import { IconPlus } from "@tabler/icons-react";
 
 export const CreatePostButton = ({ id }: { id: string | null | undefined }) => {
   const router = useRouter();
-  console.log("ID AT CREATE POST BUTTON " + id);
-  console.log(process.env.NEXT_PUBLIC_BASE_URL);
+  // console.log("ID AT CREATE POST BUTTON " + id);
+  // console.log(process.env.NEXT_PUBLIC_BASE_URL);
   const HandleCreate = () => {
     router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${id}/create`);
   };

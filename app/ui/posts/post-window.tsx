@@ -1,14 +1,47 @@
+"use client";
+import { useEffect, useState } from "react";
 import { Post } from "./post";
+import { getPosts } from "@/app/utility/fetch";
+import { Post as PostType } from "@prisma/client";
+
 export const Postswindow = () => {
+  const [postArray, setPostArray] = useState([<div>Loading</div>]);
+  useEffect(() => {
+    getPosts()
+      .then((val) => {
+        if (!val.success) {
+          setPostArray([<div>Error Loading Posts</div>]);
+        } else {
+          const data = val.data as PostType[];
+          setPostArray(
+            data.map((val) => {
+              return (
+                <Post
+                  postId={val.id}
+                  authorId={val.authorId}
+                  title={val.title}
+                  imageSrc={val.images[0]}
+                  content={val.content}
+                  createdAt={val.createdAt}
+                />
+              );
+            })
+          );
+        }
+      })
+      .catch((val) => {
+        setPostArray([
+          <div>Error in fetching posts, possible reasons : {val}</div>,
+        ]);
+      });
+  }, []);
   return (
     <div className="w-[800px] h-full border-x-2 mx-[50px]  overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark">
       <div
         id="posts-container"
-        className="flex flex-col px-[25px] mt-10 rounded-[37px] gap-5"
+        className="flex flex-col px-[25px] mt-10 rounded-[37px] gap-2"
       >
-        <Post id="1" />
-        <Post id="2" />
-        <Post id="3" />
+        {postArray.map((val) => val)}
       </div>
     </div>
   );

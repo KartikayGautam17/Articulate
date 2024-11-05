@@ -21,7 +21,7 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const postDislikes = await prisma.dislike.count({
+      const postDislikes = await prisma.dislike.findMany({
         where: {
           postId: body.postId,
         },

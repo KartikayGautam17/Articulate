@@ -21,7 +21,7 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const commentDislikes = await prisma.commentDislike.count({
+      const commentDislikes = await prisma.commentDislike.findMany({
         where: {
           commentId: body.commentId,
         },

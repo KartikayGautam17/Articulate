@@ -21,14 +21,14 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const postLikes = await prisma.like.count({
+      const postLikes = await prisma.like.findMany({
         where: {
           postId: body.postId,
         },
       });
       return NextResponse.json({
         success: true,
-        postLikes: postLikes,
+        likeArray: postLikes,
       });
     } catch (error) {
       return NextResponse.json({

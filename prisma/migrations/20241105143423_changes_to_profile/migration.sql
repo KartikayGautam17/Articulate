@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Profile" ALTER COLUMN "age" DROP NOT NULL,
+ALTER COLUMN "tags" SET DEFAULT ARRAY[]::TEXT[];

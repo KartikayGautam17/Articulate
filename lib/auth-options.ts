@@ -11,7 +11,7 @@ import { User } from "@prisma/client";
 
 export const utilUserIdbyEmail = async (email: string) => {
   const response = await getUserIdbyEmail({ email });
-  console.log(response);
+
   if (!response.success) {
     console.error("NOT SUCCESS *------*");
     return { error: response.error, reason: response.reason };
@@ -53,6 +53,7 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 2592000,
   },
 };
 

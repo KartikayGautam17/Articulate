@@ -15,6 +15,8 @@ import { FetchPostDisikesRequestProps } from "../api/fetch/posts/dislikes/route"
 import { FetchCommentLikesRequestProps } from "../api/fetch/posts/comments/likes/route";
 import { FetchCommentDislikesRequestProps } from "../api/fetch/posts/comments/dislikes/route";
 import { FetchUserIdRequestProps } from "../api/fetch/user/route";
+import { Post } from "@prisma/client";
+import { FetchPostbyIdRequestProps } from "../api/fetch/posts/data/route";
 
 /*
  ***** API CALLS TO FETCH USER RELATED DATA *****
@@ -33,9 +35,10 @@ import { FetchUserIdRequestProps } from "../api/fetch/user/route";
 export const getUserIdbyEmail = async ({
   email,
 }: FetchUserIdRequestProps): Promise<fetchApiResponseProps> => {
-  console.log("Function begin");
-  console.log(email);
-  const response = await axios.post("/api/fetch/user", { email });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "/api/fetch/user",
+    { email }
+  );
   const response_data: ResponseDataProps = response.data;
   console.log("RESPONSE DATA -*******- " + response_data);
   if (response_data.success) {
@@ -62,7 +65,10 @@ export const getUserIdbyEmail = async ({
 export const getUserProfile = async ({
   userId,
 }: FetchUserProfileRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/profiles", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/profiles",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.profile };
@@ -88,7 +94,10 @@ export const getUserProfile = async ({
 export const getUserFollowers = async ({
   userId,
 }: FetchFollowersRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/followers", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/followers",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.followersArray };
@@ -114,7 +123,10 @@ export const getUserFollowers = async ({
 export const getUserFollowing = async ({
   userId,
 }: FetchFollowingRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/following", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/following",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.followingArray };
@@ -140,7 +152,10 @@ export const getUserFollowing = async ({
 export const getUserPosts = async ({
   userId,
 }: FetchPostRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/u", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/u",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.postArray };
@@ -166,7 +181,10 @@ export const getUserPosts = async ({
 export const getUserPostsSaved = async ({
   userId,
 }: FetchSavedPostsRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/u/saved", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/u/saved",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.saveArray };
@@ -192,7 +210,10 @@ export const getUserPostsSaved = async ({
 export const getUserPostsLiked = async ({
   userId,
 }: FetchLikedPostsRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/u/liked", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/u/liked",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.postArray };
@@ -218,7 +239,10 @@ export const getUserPostsLiked = async ({
 export const getUserPostsViewed = async ({
   userId,
 }: FetchViewedPostsRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/u/viewed", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/u/viewed",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.postArray };
@@ -236,6 +260,43 @@ export const getUserPostsViewed = async ({
 */
 
 /**
+ * Gets the post data by postId.[api/fetch/posts/data]
+ *
+ * Requires postId and returns the post.
+ *
+ * @returns Post
+ */
+
+export const getPostbyId = async ({
+  id,
+}: FetchPostbyIdRequestProps): Promise<fetchApiResponseProps> => {
+  try {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/data",
+      { id }
+    );
+
+    const response_data: ResponseDataProps = response.data;
+    if (response_data.success) {
+      return { success: true, data: response_data.post as Post };
+    }
+    return {
+      success: false,
+      data: null,
+      error: response_data.error,
+      reason: response_data.reason,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error as string,
+      data: null,
+      reason: "try-block failed  ",
+    };
+  }
+};
+
+/**
  * Gets all the posts made by users on the platform.[api/fetch/posts]
  *
  * Requires no parameter and returns an array containing all the posts.
@@ -244,17 +305,29 @@ export const getUserPostsViewed = async ({
  */
 
 export const getPosts = async (): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts");
-  const response_data: ResponseDataProps = response.data;
-  if (response_data.success) {
-    return { success: true, data: response_data.postArray };
+  try {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts",
+      {}
+    );
+    const response_data: ResponseDataProps = response.data;
+    if (response_data.success) {
+      return { success: true, data: response_data.postArray as Post[] };
+    }
+    return {
+      success: false,
+      data: null,
+      error: response_data.error,
+      reason: response_data.reason,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error as string,
+      data: null,
+      reason: "try-block failed  ",
+    };
   }
-  return {
-    success: false,
-    data: null,
-    error: response_data.error,
-    reason: response_data.reason,
-  };
 };
 
 /**
@@ -266,11 +339,15 @@ export const getPosts = async (): Promise<fetchApiResponseProps> => {
  * @returns Post[]
  */
 
-export const getPostsComments = async ({
+export const getPostComments = async ({
   postId,
 }: FetchCommentsRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/comments");
+  const response = await axios.post(
+    (process.env.NEXT_PUBLIC_BASE_URL as string) + "api/fetch/posts/comments",
+    { postId }
+  );
   const response_data: ResponseDataProps = response.data;
+
   if (response_data.success) {
     return { success: true, data: response_data.commentArray };
   }
@@ -294,7 +371,10 @@ export const getPostsComments = async ({
 export const getPostsViews = async ({
   postId,
 }: FetchPostViewsRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/views");
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/views",
+    { postId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.viewsArray };
@@ -319,7 +399,10 @@ export const getPostsViews = async ({
 export const getPostsLikes = async ({
   postId,
 }: FetchPostLikesRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/likes");
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/likes",
+    { postId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.likeArray };
@@ -344,7 +427,10 @@ export const getPostsLikes = async ({
 export const getPostsDislikes = async ({
   postId,
 }: FetchPostDisikesRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/dislikes");
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/dislikes",
+    { postId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.dislikeArray };
@@ -369,7 +455,10 @@ export const getPostsDislikes = async ({
 export const getCommentsLikes = async ({
   commentId,
 }: FetchCommentLikesRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/comments/likes");
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/comments/likes",
+    { commentId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.commentLikeArray };
@@ -394,7 +483,10 @@ export const getCommentsLikes = async ({
 export const getCommentsDislikes = async ({
   commentId,
 }: FetchCommentDislikesRequestProps): Promise<fetchApiResponseProps> => {
-  const response = await axios.post("api/fetch/posts/comments/dislikes");
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/fetch/posts/comments/dislikes",
+    { commentId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.commentDislikeArray };

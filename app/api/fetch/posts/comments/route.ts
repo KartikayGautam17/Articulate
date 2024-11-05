@@ -13,6 +13,7 @@ export type FetchCommentsRequestProps = {
 export const POST = async (request: Request) => {
   const body: FetchCommentsRequestProps = await request.json();
   const parsedBody = FetchCommentsSchema.safeParse(body);
+  console.log(body);
   if (!parsedBody.success) {
     return NextResponse.json({
       success: false,
@@ -26,6 +27,8 @@ export const POST = async (request: Request) => {
           postId: body.postId,
         },
       });
+
+      console.log(comments);
       return NextResponse.json({
         success: true,
         commentArray: comments,

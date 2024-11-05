@@ -3,10 +3,11 @@ import { AddComment } from "./add-comment";
 import { PostComment } from "./comment";
 
 export type CommentProps = {
-  name: string;
-  img: string;
+  postId: string;
+  userId: string;
   content: string;
-  postedAgo: string;
+  createdAt: Date;
+  commentId: string;
 };
 
 const sampleContent =
@@ -15,12 +16,14 @@ const sampleContent =
 export const CommentSection = ({
   commentsCount,
   commentsArray,
+  postId,
 }: {
   commentsCount: number;
-  commentsArray: Array<CommentProps>;
+  commentsArray: any;
+  postId: string;
 }) => {
   return (
-    <div className="">
+    <div className="mt-5">
       <div className="my-2 flex justify-start gap-2 items-center">
         <div className=" w-fit">Comments</div>
         <span className="w-fit font-semibold text-gray-800 dark:text-gray-200 ">
@@ -31,30 +34,9 @@ export const CommentSection = ({
         <AddComment />
         <Separator className="bg-gray-600 dark:bg-gray-400 mb-2" />
         <div className="p-2 flex flex-col gap-4 border-2">
-          <PostComment
-            name="Kartikay"
-            img="https://github.com/shadcn.png"
-            content={sampleContent}
-            postedAgo="3 days ago"
-          />
-          <PostComment
-            name="Kartikay"
-            img="https://github.com/shadcn.png"
-            content={sampleContent}
-            postedAgo="3 days ago"
-          />
-          <PostComment
-            name="Kartikay"
-            img="https://github.com/shadcn.png"
-            content={sampleContent}
-            postedAgo="3 days ago"
-          />
-          <PostComment
-            name="Kartikay"
-            img="https://github.com/shadcn.png"
-            content={sampleContent}
-            postedAgo="3 days ago"
-          />
+          {commentsArray.map((val: any): typeof PostComment => {
+            return val;
+          })}
         </div>
       </div>
     </div>

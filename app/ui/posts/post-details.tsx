@@ -12,35 +12,40 @@ import { useState } from "react";
 import { SavePostButton } from "./save-post-button";
 
 export const PostDetails = ({
-  datePosted,
+  createdAt,
   name,
   avatar,
   userId,
+  postId,
 }: {
-  datePosted: string;
+  createdAt: string;
   name: string;
   avatar: string;
   userId: string;
+  postId: string;
 }) => {
   const [popoverOpenState, setPopoverOpenState] = useState(false);
   return (
     <div className="border-b-2 w-full h-[40px]   flex items-center justify-between gap-2 text-sm">
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
         <Link href={"/user/" + userId}>
           <div className="inline-flex justify-center gap-2 items-center cursor-pointer">
             <Avatar className="w-[30px] h-[30px]">
               <AvatarImage src={avatar} className="" />
-              <AvatarFallback>{name.at(0)}</AvatarFallback>
+              <AvatarFallback>
+                {name ? name.substring(0, 2) : ""}
+              </AvatarFallback>
             </Avatar>
-            <Label className="text-sm font-light cursor-pointer hover:underline">
+            <Label className="text-sm font-normal cursor-pointer hover:underline">
               {name}
+            </Label>
+
+            <span className="cursor-pointer">•</span>
+            <Label className=" text-sm font-extralight cursor-pointer">
+              {createdAt + " ago"}
             </Label>
           </div>
         </Link>
-        <div className="inline-flex justify-center gap-2 items-center">
-          <span className="ml-2">•</span>
-          <Label className="font-light text-sm">{datePosted}</Label>
-        </div>
       </div>
       <Popover open={popoverOpenState} onOpenChange={setPopoverOpenState}>
         <PopoverTrigger>

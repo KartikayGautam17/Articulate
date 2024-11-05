@@ -2,13 +2,16 @@
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { IconLogout2 } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 
 export const logoutBtnClass =
   "flex justify-start items-center bg-transparent px-3  text-base font-normal bg-red-500 text-white w-full dark:bg-sky-500 hover:ring-1 ring-red-600 hover:bg-red-500 dark:ring-sky-600 dark:hover:bg-sky-500";
 
 export const LogoutButton = () => {
   const HandleLogout = async () => {
-    await signOut({ redirect: false, callbackUrl: "/login/" });
+    await signOut({ redirect: true, callbackUrl: "/login/" });
+    //await useRouter().push("/login/");
+    //in case the above function does not work
   };
   return (
     <Button

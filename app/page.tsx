@@ -9,9 +9,6 @@ export default function Home() {
   const session = useSession();
   if (session.status === "loading") {
     return <div>Loading</div>;
-  }
-  if (session.data?.user.id === undefined) {
-    return <div>Some error occurred while fetching user session</div>;
   } else {
     return (
       <div className="overflow-hidden">

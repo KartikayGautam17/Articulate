@@ -25,7 +25,7 @@ export const Profile = () => {
   const [following, setFollowing] = useState(false);
 
   return (
-    <div className="w-[200px] h-full border-x-2 mr-[50px] pt-[50px] pb-5 px-[25px]">
+    <div className="w-[300px] h-full border-x-2 mr-[100px] pt-[50px] pb-5 px-[25px]">
       <div
         id="profile-container"
         className="flex flex-col gap-5 w-full h-full justify-start items-center overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark"

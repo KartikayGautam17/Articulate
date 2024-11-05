@@ -21,11 +21,12 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const commentLikes = await prisma.commentLike.count({
+      const commentLikes = await prisma.commentLike.findMany({
         where: {
           commentId: body.commentId,
         },
       });
+
       return NextResponse.json({
         success: true,
         commentLikeArray: commentLikes,

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   IconEye,
@@ -9,24 +11,24 @@ import { LikeButton } from "./like-button";
 import { DislikeButton } from "./dislike-button";
 import { CommentButton } from "./comment-button";
 import { useEffect, useState } from "react";
+import {
+  getPostComments,
+  getPostsDislikes,
+  getPostsLikes,
+  getPostsViews,
+} from "@/app/utility/fetch";
+import { Comment, Dislike, Like, View } from "@prisma/client";
 const btnClass =
   "flex justify-center items-center w-[75px] h-full bg-transparent text-black border-2 rounded-full hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800 ";
 
-export const PostFooter = ({
-  views,
-  likes,
-  dislikes,
-  comments,
-}: {
-  views: number;
-  likes: number;
-  dislikes: number;
-  comments: number;
-}) => {
+export const PostFooter = ({ postId }: { postId: string }) => {
   const [liked, setLiked] = useState(false);
-  //function to get if the user has already liked the post?
   const [disliked, setDisliked] = useState(false);
-  //function to get if the user has already disliked the post?
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [views, setViews] = useState(0);
+  const [comments, setComments] = useState(0);
+
   useEffect(() => {
     if (liked && disliked) {
       setDisliked(false);
@@ -37,8 +39,46 @@ export const PostFooter = ({
       setLiked(false);
     }
   }, [disliked]);
+
+  useEffect(() => {
+    getPostsLikes({ postId }).then((val) => {
+      if (val.success) {
+        console.log(val.data);
+        const data = val.data as Like[];
+        setLikes(data?.length ? data.length : 0);
+      } else {
+        console.log(val.reason);
+      }
+    });
+
+    getPostsViews({ postId }).then((val) => {
+      if (val.success) {
+        const data = val.data as View[];
+        setViews(data?.length ? data.length : 0);
+      } else {
+      }
+    });
+
+    getPostsDislikes({ postId }).then((val) => {
+      if (val.success) {
+        const data = val.data as Dislike[];
+        setDislikes(data?.length ? data.length : 0);
+      } else {
+        //
+      }
+    });
+
+    getPostComments({ postId }).then((val) => {
+      if (val.success) {
+        const data = val.data as Comment[];
+        setComments(data?.length ? data.length : 0);
+      } else {
+      }
+    });
+  }, []);
+
   return (
-    <div className="my-2 w-full h-[30px] flex gap-2 justify-start items-center">
+    <div className="my-2 w-full h-[30px] flex gap-2 justify-start items-center mt-5">
       <div
         id="views"
         className="flex justify-center items-center w-[75px] h-full text-black font-medium bg-transparent rounded-full border-2 gap-1 px-3 dark:text-gray-200 cursor-default"
