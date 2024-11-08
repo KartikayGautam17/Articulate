@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { IconThumbDown, IconThumbDownFilled } from "@tabler/icons-react";
+import {
+  IconLoader2,
+  IconThumbDown,
+  IconThumbDownFilled,
+} from "@tabler/icons-react";
 import { boolean } from "zod";
 export const DislikeButton = ({
   btnClass,
@@ -17,7 +21,7 @@ export const DislikeButton = ({
   return (
     <Button
       className={btnClass}
-      disabled={disabled}
+      disabled={disabled || dislikes === -1}
       onClick={() => {
         setState(!state);
       }}
@@ -25,7 +29,13 @@ export const DislikeButton = ({
       {!state ? (
         <>
           <IconThumbDown />
-          <span>{dislikes}</span>
+          <span>
+            {dislikes === -1 ? (
+              <IconLoader2 className="w-2 h-2 animate-spin" />
+            ) : (
+              dislikes
+            )}
+          </span>
         </>
       ) : (
         <>

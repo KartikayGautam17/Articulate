@@ -8,8 +8,9 @@ import {
 } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
 import { IconDots } from "@tabler/icons-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SavePostButton } from "./save-post-button";
+import { DeletePostDialog } from "./delete-post-button";
 
 export const PostDetails = ({
   createdAt,
@@ -17,12 +18,18 @@ export const PostDetails = ({
   avatar,
   userId,
   postId,
+  ownPost,
+  isSaved,
+  setIsSaved,
 }: {
+  ownPost: boolean;
   createdAt: string;
   name: string;
   avatar: string;
   userId: string;
   postId: string;
+  isSaved: boolean;
+  setIsSaved: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [popoverOpenState, setPopoverOpenState] = useState(false);
   return (
@@ -54,10 +61,15 @@ export const PostDetails = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-fit h-fit border-2 p-0 ">
-          <SavePostButton
-            popoverOpenState={popoverOpenState}
-            setPopoverOpenState={setPopoverOpenState}
-          />
+          <div className="flex flex-col">
+            <SavePostButton
+              isSaved={isSaved}
+              setIsSaved={setIsSaved}
+              popoverOpenState={popoverOpenState}
+              setPopoverOpenState={setPopoverOpenState}
+            />
+            {ownPost ? <DeletePostDialog postId={postId} /> : <></>}
+          </div>
         </PopoverContent>
       </Popover>
     </div>

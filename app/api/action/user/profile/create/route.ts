@@ -4,20 +4,18 @@ import prisma from "@/lib/prisma-adapter";
 
 const ProfileSchema = z.object({
   userId: z.string().cuid(),
-  name: z.string().min(3),
+  name: z.string(),
   description: z.string(),
-  age: z.number(),
   image: z.string(),
-  tags: z.array(z.string()),
+  links: z.array(z.string()),
 });
 
 export type ProfileRequestProps = {
   userId: string;
   name: string;
   description: string;
-  age: number;
   image: string;
-  tags: string[];
+  links: string[];
 };
 
 export const POST = async (request: Request) => {
@@ -35,10 +33,9 @@ export const POST = async (request: Request) => {
         data: {
           userId: body.userId,
           name: body.name,
-          age: body.age,
+          links: body.links,
           description: body.description,
           image: body.image,
-          tags: body.tags,
         },
       });
       return NextResponse.json({

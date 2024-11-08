@@ -44,7 +44,7 @@ export const Navbar = ({
             <></>
           )}
           <div id="user_profile">
-            <UserAvatar />
+            <UserAvatar id={id} />
           </div>
         </div>
       </div>

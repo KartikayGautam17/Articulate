@@ -1,49 +1,73 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FollowUserButton } from "./follow-user-button";
 import { ProfileDescription } from "./profile-description";
 import { ProfileLinks } from "./profile-links";
 import { ProfileName } from "./profile-name";
 import { ProfilePhoto } from "./profile-photo";
 import { ProfileStats } from "./profile-stats";
+import {
+  getUserFollowers,
+  getUserFollowing,
+  getUserProfile,
+} from "@/app/utility/fetch";
+import { Follows, Profile as ProfileType } from "@prisma/client";
 
-const sample = {
-  description:
-    "Hi just wanted to let you know about my booooooom baam boom baam",
-  links: ["instagram", "facebook", "youtube"],
-  targetLinks: [
-    "https://www.instagram.com/reels/C4xlhMbR7cZ/?next=%2F",
-    "https://www.facebook.com/",
-    "https://www.youtube.com/",
-  ],
-  views: 123,
-  following: 24,
-  followers: 506,
-};
+export const Profile = ({
+  name,
+  image,
+  userId,
+  description,
+  links,
+}: {
+  links: string[] | null;
+  description: string;
+  name: string;
+  image: string | null;
+  userId: string;
+}) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followers, setFollowers] = useState(-1);
+  const [following, setFollowing] = useState(-1);
 
-export const Profile = () => {
-  const [following, setFollowing] = useState(false);
+  useEffect(() => {
+    getUserFollowers({ userId }).then((value) => {
+      if (value.success) {
+        const data = value.data as Follows[];
+        setFollowers(data.length);
+      }
+    });
 
+    getUserFollowing({ userId }).then((value) => {
+      if (value.success) {
+        const data = value.data as Follows[];
+        setFollowing(data.length);
+      }
+    });
+  }, []);
   return (
     <div className="w-[300px] h-full border-x-2 mr-[100px] pt-[50px] pb-5 px-[25px]">
       <div
         id="profile-container"
         className="flex flex-col gap-5 w-full h-full justify-start items-center overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark"
       >
-        <ProfilePhoto fallback="KG" src="https://github.com/shadcn.png" />
-        <ProfileName name="Kartikay" />
-        <ProfileDescription description={sample.description} />
+        <ProfilePhoto
+          fallback={name.substring(0, 2)}
+          src={
+            image
+              ? image
+              : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+          }
+        />
+        <ProfileName name={name} />
+        <ProfileDescription description={description} />
         <FollowUserButton
-          following={following}
-          setFollowing={setFollowing}
-          username="Kartikay Gautam"
+          following={isFollowing}
+          setFollowing={setIsFollowing}
+          username={name}
         />
-        <ProfileLinks links={sample.links} targetLinks={sample.targetLinks} />
-        <ProfileStats
-          views={sample.views}
-          following={sample.following}
-          followers={sample.followers}
-        />
+        <ProfileLinks links={links ? links : []} />
+        <ProfileStats following={following} followers={followers} />
       </div>
     </div>
   );

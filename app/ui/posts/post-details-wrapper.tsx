@@ -3,25 +3,45 @@
 import { formatDistanceToNow } from "date-fns";
 import { PostDetails } from "./post-details";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { getUserProfile } from "@/app/utility/fetch";
+import { Profile } from "@prisma/client";
 export const PostDetailsWrapper = ({
   createdAt,
   userId,
   postId,
+  ownPost,
 }: {
+  ownPost: boolean;
   createdAt: Date;
   userId: string;
   postId: string;
 }) => {
   const session = useSession();
+  const [isSaved, setIsSaved] = useState(false);
+  const [name, setName] = useState("loading");
+  const [image, setImage] = useState("");
+  useEffect(() => {
+    getUserProfile({ userId: userId }).then((value) => {
+      if (value.success) {
+        const data = value.data as Profile;
+        setName(data.name);
+        setImage(data.image ? data.image : "");
+      }
+    });
+  }, []);
   if (session.status === "loading") {
-    return <></>;
+    return <div>Loading</div>;
   }
   return (
     <PostDetails
       postId={postId}
       userId={userId}
-      name={session.data?.user.name as string}
-      avatar={session.data?.user.image as string}
+      ownPost={ownPost}
+      isSaved={isSaved}
+      setIsSaved={setIsSaved}
+      name={name}
+      avatar={image}
       createdAt={
         createdAt
           ? formatDistanceToNow(new Date(createdAt))

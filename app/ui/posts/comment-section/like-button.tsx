@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { IconThumbUp, IconThumbUpFilled } from "@tabler/icons-react";
+import {
+  IconLoader2,
+  IconThumbUp,
+  IconThumbUpFilled,
+} from "@tabler/icons-react";
 export const LikeButton = ({
   btnClass,
   data: likes,
@@ -18,8 +22,11 @@ export const LikeButton = ({
       onClick={() => {
         setState(!state);
       }}
+      disabled={likes === -1}
     >
-      {!state ? (
+      {likes === -1 ? (
+        <IconLoader2 className="w-3 h-3 animate-spin" />
+      ) : !state ? (
         <>
           <IconThumbUp />
           <span>{likes}</span>

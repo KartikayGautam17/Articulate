@@ -31,7 +31,7 @@ export const POST = async (request: Request) => {
       });
       return NextResponse.json({
         success: true,
-        followsArray: followersArray,
+        followersArray: followersArray,
       });
     } catch (error) {
       return NextResponse.json({

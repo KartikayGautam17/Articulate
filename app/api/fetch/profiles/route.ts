@@ -7,8 +7,7 @@ const FetchUserProfile = z.object({
 });
 
 export type FetchUserProfileRequestProps = {
-  userId?: string;
-  email?: string;
+  userId: string;
 };
 
 export const POST = async (request: Request) => {

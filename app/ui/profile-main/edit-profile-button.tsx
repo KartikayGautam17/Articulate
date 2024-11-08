@@ -76,14 +76,16 @@ export const EditProfileButton = ({
         <div className="flex justify-start items-baseline px-8  gap-4">
           <Label className="min-w-20 font-light">Links</Label>
           <div className="flex flex-col justify-center items-center gap-2 w-full">
-            {links.map((val, i) => {
-              return (
-                <Input
-                  placeholder={"Enter link " + (i + 1)}
-                  defaultValue={val}
-                />
-              );
-            })}
+            {Array(3)
+              .fill(0)
+              .map((val, i) => {
+                return (
+                  <Input
+                    placeholder={"Enter link " + (i + 1)}
+                    defaultValue={i >= links.length ? "" : links[i]}
+                  />
+                );
+              })}
           </div>
         </div>
         <DialogFooter>

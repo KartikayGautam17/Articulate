@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
+  IconLoader2,
   IconRotate2,
   IconThumbUp,
   IconThumbUpFilled,
@@ -20,7 +21,7 @@ export const LikeButton = ({
   return (
     <Button
       className={btnClass}
-      disabled={disabled}
+      disabled={disabled || likes === -1}
       onClick={() => {
         setState(!state);
       }}
@@ -28,7 +29,13 @@ export const LikeButton = ({
       {!state ? (
         <>
           <IconThumbUp />
-          <span>{likes}</span>
+          <span>
+            {likes === -1 ? (
+              <IconLoader2 className="w-2 h-2 animate-spin" />
+            ) : (
+              likes
+            )}
+          </span>
         </>
       ) : (
         <>

@@ -1,13 +1,13 @@
 "use client";
-import { IconUserCircle } from "@tabler/icons-react";
+
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
-export const UserAvatar = () => {
+export const UserAvatar = ({ id }: { id: string | null | undefined }) => {
   const session = useSession();
   return (
-    <Link href={"/user/profile/"}>
+    <Link href={`/user/${id ? id : ""}`}>
       <Avatar>
         <AvatarImage src={session?.data?.user.image as string} />
         <AvatarFallback>

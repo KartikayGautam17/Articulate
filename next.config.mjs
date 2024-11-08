@@ -13,6 +13,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.pexels.com", port: "" },
       { protocol: "https", hostname: "github.com", port: "" },
+      { protocol: "https", hostname: "cdn.discordapp.com", port: "" },
+      { protocol: "https", hostname: "thumbs.dreamstime.com", port: "" },
     ],
   },
 };

@@ -6,6 +6,7 @@ import {
   IconThumbUp,
   IconThumbDown,
   IconMessage,
+  IconLoader2,
 } from "@tabler/icons-react";
 import { LikeButton } from "./like-button";
 import { DislikeButton } from "./dislike-button";
@@ -21,13 +22,19 @@ import { Comment, Dislike, Like, View } from "@prisma/client";
 const btnClass =
   "flex justify-center items-center w-[75px] h-full bg-transparent text-black border-2 rounded-full hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800 ";
 
-export const PostFooter = ({ postId }: { postId: string }) => {
+export const PostFooter = ({
+  postId,
+  userId,
+}: {
+  postId: string;
+  userId: string;
+}) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [views, setViews] = useState(0);
-  const [comments, setComments] = useState(0);
+  const [likes, setLikes] = useState(-1);
+  const [dislikes, setDislikes] = useState(-1);
+  const [views, setViews] = useState(-1);
+  const [comments, setComments] = useState(-1);
 
   useEffect(() => {
     if (liked && disliked) {
@@ -43,9 +50,18 @@ export const PostFooter = ({ postId }: { postId: string }) => {
   useEffect(() => {
     getPostsLikes({ postId }).then((val) => {
       if (val.success) {
-        console.log(val.data);
         const data = val.data as Like[];
-        setLikes(data?.length ? data.length : 0);
+        let flag = false;
+        for (let i = 0; i < data.length; i += 1) {
+          if (data[i].userId === userId) {
+            flag = true;
+            break;
+          }
+        }
+        let likes = data?.length ? data?.length : 0;
+        if (flag) likes -= 1;
+        setLiked(flag);
+        setLikes(likes);
       } else {
         console.log(val.reason);
       }
@@ -62,7 +78,19 @@ export const PostFooter = ({ postId }: { postId: string }) => {
     getPostsDislikes({ postId }).then((val) => {
       if (val.success) {
         const data = val.data as Dislike[];
-        setDislikes(data?.length ? data.length : 0);
+
+        let flag = false;
+        for (let i = 0; i < data.length; i += 1) {
+          if (data[i].userId === userId) {
+            flag = true;
+            break;
+          }
+        }
+        let dislikes = data?.length ? data?.length : 0;
+        if (flag) dislikes -= 1;
+        setDisliked(flag);
+
+        setDislikes(dislikes);
       } else {
         //
       }
@@ -84,7 +112,13 @@ export const PostFooter = ({ postId }: { postId: string }) => {
         className="flex justify-center items-center w-[75px] h-full text-black font-medium bg-transparent rounded-full border-2 gap-1 px-3 dark:text-gray-200 cursor-default"
       >
         <IconEye width={16} height={16} />
-        <span className="text-sm tracking-normal">{views}</span>
+        <span className="text-sm tracking-normal">
+          {views === -1 ? (
+            <IconLoader2 className="w-3 h-3 animate-spin" />
+          ) : (
+            views
+          )}
+        </span>
       </div>
       <LikeButton
         btnClass={btnClass}

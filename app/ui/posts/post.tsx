@@ -2,14 +2,8 @@ import Link from "next/link";
 import { PostFooter } from "./footer/post-footer";
 import { PostImageWrapper } from "./image-wrapper";
 import { PostContent } from "./post-content";
-import { PostDetails } from "./post-details";
-import { formatDistanceToNow } from "date-fns";
 import { PostTitle } from "./post-title";
-import {
-  CommentProps,
-  CommentSection,
-} from "./comment-section/comment-section";
-import { Separator } from "@/components/ui/separator";
+import { CommentProps } from "./comment-section/comment-section";
 import { CommentSectionWrapper } from "./comment-section/comment-section-wrapper";
 import { PostDetailsWrapper } from "./post-details-wrapper";
 
@@ -20,6 +14,7 @@ export const Post = ({
   title,
   imageSrc,
   content,
+  ownPost = false,
   hotFocus = false,
 }: {
   postId: string;
@@ -29,6 +24,7 @@ export const Post = ({
   imageSrc?: string;
   content: string;
   hotFocus?: boolean;
+  ownPost?: boolean;
   commentsCount?: number;
   commentsArray?: CommentProps[];
 }) => {
@@ -44,6 +40,7 @@ export const Post = ({
         postId={postId}
         userId={authorId}
         createdAt={createdAt}
+        ownPost={ownPost}
       />
       {/* too lazy to wrap the components inside the the Link tag below */}
       {hotFocus ? (
@@ -51,7 +48,7 @@ export const Post = ({
           <PostTitle title={title} />
           <PostImageWrapper src={imageSrc ? imageSrc : ""} />
           <PostContent content={content} />
-          <PostFooter postId={postId} />
+          <PostFooter postId={postId} userId={authorId} />
 
           <CommentSectionWrapper postId={postId} />
         </div>
@@ -62,7 +59,7 @@ export const Post = ({
             <PostImageWrapper src={imageSrc ? imageSrc : ""} />
             <PostContent content={content} />
           </Link>
-          <PostFooter postId={postId} />
+          <PostFooter postId={postId} userId={authorId} />
         </>
       )}
     </div>

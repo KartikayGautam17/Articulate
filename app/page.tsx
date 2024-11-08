@@ -15,7 +15,7 @@ export default function Home() {
         <Navbar id={session.data?.user.id} />
         <div className="w-full flex mContainer justify-between">
           <Sidebar />
-          <Postswindow />
+          <Postswindow userId={session.data?.user.id} />
           <ProfilePlaceHolder />
         </div>
       </div>

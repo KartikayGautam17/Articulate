@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { IconMessage } from "@tabler/icons-react";
+import { IconLoader2, IconMessage } from "@tabler/icons-react";
 
 export const CommentButton = ({
   btnClass,
@@ -11,17 +11,16 @@ export const CommentButton = ({
   data: number;
   disabled: boolean;
 }) => {
-  if (disabled) {
-    return (
-      <Button className={btnClass} disabled={true}>
-        <IconMessage />
-      </Button>
-    );
-  }
   return (
-    <Button className={btnClass}>
+    <Button className={btnClass} disabled={disabled || comments === -1}>
       <IconMessage />
-      <span>{comments}</span>
+      <span>
+        {comments === -1 ? (
+          <IconLoader2 className="w-2 h-2 animate-spin" />
+        ) : (
+          comments
+        )}
+      </span>
     </Button>
   );
 };
