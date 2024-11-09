@@ -4,12 +4,10 @@ import { z } from "zod";
 
 const DeleteDislikeSchema = z.object({
   dislikeId: z.string().cuid(),
-  userId: z.string().cuid(),
 });
 
 export type DeleteDislikeRequest = {
   dislikeId: string;
-  userId: string;
 };
 
 export const POST = async (request: Request) => {
@@ -26,7 +24,6 @@ export const POST = async (request: Request) => {
       const dislike = await prisma.dislike.delete({
         where: {
           id: body.dislikeId,
-          userId: body.userId,
         },
       });
       return NextResponse.json({ success: true, dislike: dislike });

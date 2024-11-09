@@ -12,7 +12,13 @@ export const CommentButton = ({
   disabled: boolean;
 }) => {
   return (
-    <Button className={btnClass} disabled={disabled || comments === -1}>
+    <Button
+      className={btnClass + "cursor-default hover:bg-current"}
+      disabled={disabled || comments === -1}
+      onClick={() => {
+        /* empty function I do not plan to make this button work actually :)*/
+      }}
+    >
       <IconMessage />
       <span>
         {comments === -1 ? (

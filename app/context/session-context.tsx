@@ -8,7 +8,7 @@ export default function SessionAuthContext({
 }) {
   return (
     <>
-      <SessionProvider>{children}</SessionProvider>
+      <SessionProvider refetchOnWindowFocus={false}>{children}</SessionProvider>
     </>
   );
 }

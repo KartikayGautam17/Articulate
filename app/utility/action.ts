@@ -1,5 +1,6 @@
-import axios from "axios";
+"use server";
 
+import axios from "axios";
 import { DeleteUserRequest } from "../api/action/user/delete/route";
 import { actionApiResponseProps, ResponseDataProps } from "./types";
 import { ProfileRequestProps } from "../api/action/user/profile/create/route";
@@ -36,7 +37,10 @@ import { DeleteCommentDislikeSchemaProps } from "../api/action/user/post/comment
 export const deleteAccount = async ({
   userId,
 }: DeleteUserRequest): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/delete", { userId });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/delete",
+    { userId }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.user };
@@ -62,18 +66,19 @@ export const createProfile = async ({
   userId,
   name,
   description,
-  age,
+
   image,
-  tags,
 }: ProfileRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/profile/create", {
-    userId,
-    name,
-    description,
-    age,
-    image,
-    tags,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/profile/create",
+    {
+      userId,
+      name,
+      description,
+
+      image,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.profile };
@@ -99,18 +104,19 @@ export const updateProfile = async ({
   userId,
   name,
   description,
-  age,
+  links,
   image,
-  tags,
 }: UpdateProfileRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/profile/update", {
-    userId,
-    name,
-    description,
-    age,
-    image,
-    tags,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/profile/update",
+    {
+      userId,
+      name,
+      description,
+      links,
+      image,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.profile };
@@ -134,10 +140,13 @@ export const createFollower = async ({
   userId,
   targetId,
 }: FollowRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/follow/create", {
-    userId,
-    targetId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/follow/create",
+    {
+      userId,
+      targetId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.follow };
@@ -161,10 +170,13 @@ export const deleteFollower = async ({
   userId,
   targetId,
 }: DeleteFollowRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/follow/delete", {
-    userId,
-    targetId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/follow/delete",
+    {
+      userId,
+      targetId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.follow };
@@ -196,12 +208,15 @@ export const createPost = async ({
   content,
   images,
 }: CreatePostRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/create", {
-    authorId,
-    title,
-    content,
-    images,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/create",
+    {
+      authorId,
+      title,
+      content,
+      images,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.post };
@@ -228,11 +243,14 @@ export const updatePost = async ({
   content,
   images,
 }: UpdatePostRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/update", {
-    title,
-    content,
-    images,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/update",
+    {
+      title,
+      content,
+      images,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.post };
@@ -256,10 +274,13 @@ export const deletePost = async ({
   postId,
   userId,
 }: DeletePostRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/delete", {
-    postId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/delete",
+    {
+      postId,
+      userId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.post };
@@ -283,10 +304,13 @@ export const savePost = async ({
   userId,
   postId,
 }: SavePostRequest): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/save", {
-    userId,
-    postId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/save",
+    {
+      userId,
+      postId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.save };
@@ -310,10 +334,13 @@ export const unSavePost = async ({
   userId,
   saveId,
 }: UnsavePostSchemaProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/save/delete", {
-    userId,
-    saveId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/save/delete",
+    {
+      userId,
+      saveId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.save };
@@ -337,10 +364,13 @@ export const likePost = async ({
   postId,
   userId,
 }: LikePostRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/like", {
-    postId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/like",
+    {
+      postId,
+      userId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.like };
@@ -362,12 +392,13 @@ export const likePost = async ({
 
 export const unLikePost = async ({
   likeId,
-  userId,
 }: DeleteLikeSchemaProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/like/delete", {
-    likeId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/like/delete",
+    {
+      likeId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.like };
@@ -391,10 +422,13 @@ export const dislikePost = async ({
   postId,
   userId,
 }: DislikePostRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/dislike", {
-    postId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/dislike",
+    {
+      postId,
+      userId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.dislike };
@@ -416,12 +450,13 @@ export const dislikePost = async ({
 
 export const unDislikePost = async ({
   dislikeId,
-  userId,
 }: DeleteDislikeRequest): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/dislike/delete", {
-    dislikeId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/dislike/delete",
+    {
+      dislikeId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.dislike };
@@ -445,10 +480,13 @@ export const viewPost = async ({
   userId,
   postId,
 }: ViewPostRequest): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/view", {
-    postId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/view",
+    {
+      postId,
+      userId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.view };
@@ -477,11 +515,14 @@ export const createComment = async ({
   postId,
   userId,
 }: CreateCommentRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/comment/create", {
-    postId,
-    userId,
-    content,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/comment/create",
+    {
+      postId,
+      userId,
+      content,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.comment };
@@ -503,12 +544,13 @@ export const createComment = async ({
 
 export const deleteComment = async ({
   commentId,
-  userId,
 }: DeleteCommentSchemaProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/comment/delete", {
-    commentId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/comment/delete",
+    {
+      commentId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.comment };
@@ -532,10 +574,13 @@ export const likeComment = async ({
   commentId,
   userId,
 }: LikeCommentRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/comment/like", {
-    commentId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/comment/like",
+    {
+      commentId,
+      userId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.commentLike };
@@ -557,13 +602,12 @@ export const likeComment = async ({
 
 export const unLikeComment = async ({
   commentLikeId,
-  userId,
 }: DeleteCommentLikeSchemaProps): Promise<actionApiResponseProps> => {
   const response = await axios.post(
-    "api/action/user/post/comment/like/delete",
+    process.env.NEXT_PUBLIC_BASE_URL +
+      "api/action/user/post/comment/like/delete",
     {
       commentLikeId,
-      userId,
     }
   );
   const response_data: ResponseDataProps = response.data;
@@ -589,10 +633,13 @@ export const dislikeComment = async ({
   commentId,
   userId,
 }: DislikeCommentRequestProps): Promise<actionApiResponseProps> => {
-  const response = await axios.post("api/action/user/post/comment/dislike", {
-    commentId,
-    userId,
-  });
+  const response = await axios.post(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/action/user/post/comment/dislike",
+    {
+      commentId,
+      userId,
+    }
+  );
   const response_data: ResponseDataProps = response.data;
   if (response_data.success) {
     return { success: true, data: response_data.commentDislike };
@@ -614,13 +661,12 @@ export const dislikeComment = async ({
 
 export const unDislikeComment = async ({
   commentDislikeId,
-  userId,
 }: DeleteCommentDislikeSchemaProps): Promise<actionApiResponseProps> => {
   const response = await axios.post(
-    "api/action/user/post/comment/dislike/delete",
+    process.env.NEXT_PUBLIC_BASE_URL +
+      "api/action/user/post/comment/dislike/delete",
     {
       commentDislikeId,
-      userId,
     }
   );
   const response_data: ResponseDataProps = response.data;

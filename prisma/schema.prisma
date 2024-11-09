@@ -149,8 +149,8 @@ model CommentDislike {
 
 model Save{
   id String @id @default(cuid())
-  user User @relation(name: "SavedByUser",fields: [userId],references: [id])
-  post Post @relation(name: "SavedPost",fields: [postId],references: [id])
+  user User @relation(name: "SavedByUser",fields: [userId],references: [id],onDelete: Cascade)
+  post Post @relation(name: "SavedPost",fields: [postId],references: [id],onDelete: Cascade)
   userId String
   postId String
   createdAt DateTime @default(now())

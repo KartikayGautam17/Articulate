@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { getPostComments } from "@/app/utility/fetch";
 import { Comment } from "@prisma/client";
 import { PostComment } from "./comment";
+import { useSession } from "next-auth/react";
 
 export const CommentSectionWrapper = ({ postId }: { postId: string }) => {
   const [commentArray, setCommentArray] = useState<
     React.ReactElement[] | CommentProps[]
   >([<div>Loading</div>]);
-
+  const session = useSession();
+  const [render, SetRender] = useState(false);
   useEffect(() => {
     getPostComments({ postId: postId })
       .then((value) => {
@@ -27,6 +29,8 @@ export const CommentSectionWrapper = ({ postId }: { postId: string }) => {
                   createdAt={val.createdAt}
                   content={val.content}
                   userId={val.authorId}
+                  render={render}
+                  SetRender={SetRender}
                 />
               );
             })
@@ -38,14 +42,22 @@ export const CommentSectionWrapper = ({ postId }: { postId: string }) => {
       .catch((reason) => {
         console.log(reason);
       });
-  }, []);
+  }, [render]);
+
+  if (!session.data?.user.id) {
+    return <div>Loading</div>;
+  }
+
   return (
     <>
       <Separator className="my-2 bg-gray-400" />
       <CommentSection
+        render={render}
+        SetRender={SetRender}
         commentsCount={commentArray.length}
         commentsArray={commentArray as CommentProps[]}
         postId={postId}
+        userId={session.data?.user.id as string}
       />
     </>
   );

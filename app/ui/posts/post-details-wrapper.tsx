@@ -11,7 +11,11 @@ export const PostDetailsWrapper = ({
   userId,
   postId,
   ownPost,
+  render,
+  setRender,
 }: {
+  render: any;
+  setRender: any;
   ownPost: boolean;
   createdAt: Date;
   userId: string;
@@ -35,6 +39,8 @@ export const PostDetailsWrapper = ({
   }
   return (
     <PostDetails
+      render={render}
+      setRender={setRender}
       postId={postId}
       userId={userId}
       ownPost={ownPost}

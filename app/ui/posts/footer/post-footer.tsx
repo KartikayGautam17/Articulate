@@ -18,7 +18,13 @@ import {
   getPostsLikes,
   getPostsViews,
 } from "@/app/utility/fetch";
-import { Comment, Dislike, Like, View } from "@prisma/client";
+import { Comment, CommentDislike, Dislike, Like, View } from "@prisma/client";
+import {
+  dislikePost,
+  likePost,
+  unDislikePost,
+  unLikePost,
+} from "@/app/utility/action";
 const btnClass =
   "flex justify-center items-center w-[75px] h-full bg-transparent text-black border-2 rounded-full hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800 ";
 
@@ -35,13 +41,54 @@ export const PostFooter = ({
   const [dislikes, setDislikes] = useState(-1);
   const [views, setViews] = useState(-1);
   const [comments, setComments] = useState(-1);
-
+  const [likeId, setLikeId] = useState<string | null>(null);
+  const [dislikeId, setDislikeId] = useState<string | null>(null);
   useEffect(() => {
+    if (liked) {
+      try {
+        likePost({ postId, userId }).then((value) => {
+          if (value.success) {
+            const data = value.data as Like;
+            setLikeId(data.id);
+          }
+        });
+      } catch (error) {
+        //might do something in future about this
+      }
+    } else {
+      if (likeId) {
+        unLikePost({ likeId }).then((value) => {
+          if (value.success) {
+            setLikeId(null);
+          }
+        });
+      }
+    }
     if (liked && disliked) {
       setDisliked(false);
     }
   }, [liked]);
   useEffect(() => {
+    if (disliked) {
+      try {
+        dislikePost({ postId, userId }).then((value) => {
+          if (value.success) {
+            const data = value.data as CommentDislike;
+            setDislikeId(data.id);
+          }
+        });
+      } catch (error) {
+        //might do something in future about this
+      }
+    } else {
+      if (dislikeId) {
+        unDislikePost({ dislikeId }).then((value) => {
+          if (value.success) {
+            setDislikeId(null);
+          }
+        });
+      }
+    }
     if (liked && disliked) {
       setLiked(false);
     }
@@ -55,6 +102,7 @@ export const PostFooter = ({
         for (let i = 0; i < data.length; i += 1) {
           if (data[i].userId === userId) {
             flag = true;
+            setLikeId(data[i].id);
             break;
           }
         }
@@ -70,19 +118,21 @@ export const PostFooter = ({
     getPostsViews({ postId }).then((val) => {
       if (val.success) {
         const data = val.data as View[];
+
         setViews(data?.length ? data.length : 0);
       } else {
+        console.log(val.reason);
       }
     });
 
     getPostsDislikes({ postId }).then((val) => {
       if (val.success) {
         const data = val.data as Dislike[];
-
         let flag = false;
         for (let i = 0; i < data.length; i += 1) {
           if (data[i].userId === userId) {
             flag = true;
+            setDislikeId(data[i].id);
             break;
           }
         }
@@ -116,7 +166,7 @@ export const PostFooter = ({
           {views === -1 ? (
             <IconLoader2 className="w-3 h-3 animate-spin" />
           ) : (
-            views
+            <div>{views}</div>
           )}
         </span>
       </div>
@@ -126,6 +176,8 @@ export const PostFooter = ({
         state={liked}
         setState={setLiked}
         disabled={false}
+        likeId={likeId}
+        setLikeId={setLikeId}
       />
       <DislikeButton
         btnClass={btnClass}
@@ -133,6 +185,8 @@ export const PostFooter = ({
         state={disliked}
         setState={setDisliked}
         disabled={false}
+        dislikeId={dislikeId}
+        setDislikeId={setDislikeId}
       />
       <CommentButton btnClass={btnClass} data={comments} disabled={false} />
     </div>

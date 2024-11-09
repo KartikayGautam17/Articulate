@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const CreatePostSchema = z.object({
-  title: z.string().min(1).max(96),
-  content: z.string().min(1),
+  title: z.string().min(1).max(30),
+  content: z.string().min(1).max(2048),
   authorId: z.string().cuid(),
-  images: z.array(z.string().min(1)),
+  images: z.array(z.string()),
 });
 
 export type CreatePostRequestProps = {

@@ -9,16 +9,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getUserIdbyEmail } from "@/app/utility/fetch";
 import { User } from "@prisma/client";
 
-export const utilUserIdbyEmail = async (email: string) => {
-  const response = await getUserIdbyEmail({ email });
-
-  if (!response.success) {
-    console.error("NOT SUCCESS *------*");
-    return { error: response.error, reason: response.reason };
-  }
-  return { user: response.data as User };
-};
-
 export const authOptions: AuthOptions = {
   providers: [
     GithubProvider({
@@ -41,10 +31,30 @@ export const authOptions: AuthOptions = {
         if (User) {
           session.user.id = User.id;
         } else {
-          session.user.id = undefined;
+          throw new Error("User Id is undefined");
         }
       }
-
+      if (session.user.name && session.user.image && session.user.email) {
+        try {
+          const UserProfile = await prisma.profile.findUnique({
+            where: {
+              userId: session.user.id as string,
+            },
+          });
+          if (!UserProfile) {
+            const profile = await prisma.profile.create({
+              data: {
+                name: session.user.name,
+                userId: session.user.id as string,
+                image: session.user.image,
+                description: "Hello I am " + session.user.name,
+              },
+            });
+          }
+        } catch (error) {
+          throw new Error("Error creating user profile");
+        }
+      }
       return session;
     },
   },

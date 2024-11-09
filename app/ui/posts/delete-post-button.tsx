@@ -9,35 +9,91 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { IconLoader2, IconTrash } from "@tabler/icons-react";
+import { IconCheck, IconLoader2, IconTrash, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { deletePost } from "@/app/utility/action";
 
-export const DeletePostDialog = ({ postId }: { postId: string }) => {
+export const DeletePostDialog = ({
+  postId,
+  userId,
+  isDisabled,
+  setIsDisabled,
+  render,
+  setRender,
+}: {
+  render: any;
+  setRender: any;
+  isDisabled: boolean;
+  setIsDisabled: Dispatch<SetStateAction<boolean>>;
+  postId: string;
+  userId: string;
+}) => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteBtnClicked, setDeleteBtnClicked] = useState(false);
+
   const router = useRouter();
-  useEffect(() => {
-    if (!deleteBtnClicked) return;
-    const timeout = setTimeout(() => {
-      setDeleteBtnClicked(false);
+  const HandleDelete = async () => {
+    try {
+      const response = await deletePost({ postId, userId });
+      if (response.success) {
+        toast({
+          title: (
+            <div className="flex items-center justify-start gap-1">
+              <IconCheck width={16} height={16} />
+              <span>Post Deleted</span>
+            </div>
+          ),
+          description: "Refresh to see changes",
+          action: (
+            <ToastAction
+              onClick={() => {
+                if (setRender) {
+                  setRender(!render);
+                }
+              }}
+              altText="..."
+            >
+              Refresh
+            </ToastAction>
+          ),
+        });
+        setDeleteBtnClicked(false);
+        setDialogOpen(false);
+        setIsDisabled(true);
+      } else {
+        toast({
+          title: (
+            <div className="flex items-center justify-start gap-1">
+              <IconX width={16} height={16} />
+              <span>Failure</span>
+            </div>
+          ),
+          description:
+            "Post might have already been deleted refresh to see changes",
+          action: <ToastAction altText="...">Close</ToastAction>,
+        });
+        console.log(response.error);
+        setDeleteBtnClicked(false);
+        setDialogOpen(false);
+      }
+    } catch (error) {
       toast({
-        title: "Post Deleted",
-        description: "However it may take time to sync changes with database",
-        action: <ToastAction altText="...">Got it</ToastAction>,
+        title: (
+          <div className="flex items-center justify-start gap-1">
+            <IconX width={16} height={16} />
+            <span>Failure</span>
+          </div>
+        ),
+        description: "Could not delete post" + error,
+        action: <ToastAction altText="...">Close</ToastAction>,
       });
-    }, 1500);
-    const timeout2 = setTimeout(() => {
-      router.push("/");
-    }, 2500);
-    () => {
-      clearTimeout(timeout);
-      clearTimeout(timeout2);
-    };
-  }, [deleteBtnClicked]);
+      setDeleteBtnClicked(false);
+    }
+  };
   return (
     <>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -45,6 +101,7 @@ export const DeletePostDialog = ({ postId }: { postId: string }) => {
           <Button
             onClick={() => {}}
             variant={"outline"}
+            disabled={isDisabled}
             className="w-[100px] h-fit bg-transparent text-black hover:bg-gray-200 
       font-light text-sm py-2 dark:hover:bg-gray-800 dark:text-white flex items-center justify-between"
           >
@@ -66,13 +123,14 @@ export const DeletePostDialog = ({ postId }: { postId: string }) => {
             <Button
               variant={"default"}
               onClick={() => {
+                HandleDelete();
                 setDeleteBtnClicked(true);
               }}
               disabled={deleteBtnClicked}
             >
               {deleteBtnClicked ? (
                 <>
-                  <IconLoader2 className="w-4 h-4 animate-spin" /> Deleting...{" "}
+                  <IconLoader2 className="w-4 h-4 animate-spin" />
                 </>
               ) : (
                 <>Yes</>

@@ -13,28 +13,63 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { IconTrash, IconLoader2 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { deleteComment } from "@/app/utility/action";
 
-export const DeleteCommentDialog = ({ commentId }: { commentId: string }) => {
+export const DeleteCommentDialog = ({
+  commentId,
+  setPopoverState,
+  render,
+  SetRender,
+}: {
+  commentId: string;
+  render: any;
+  SetRender: any;
+  setPopoverState: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteBtnClicked, setDeleteBtnClicked] = useState(false);
-  const router = useRouter();
-  useEffect(() => {
-    if (!deleteBtnClicked) return;
-    const timeout = setTimeout(() => {
-      setDeleteBtnClicked(false);
-      toast({
-        title: "Post Deleted",
-        description: "However it may take time to sync changes with database",
-        action: <ToastAction altText="...">Got it</ToastAction>,
-      });
-    }, 1500);
 
-    () => {
-      clearTimeout(timeout);
-    };
-  }, [deleteBtnClicked]);
+  const HandleOnClick = async () => {
+    try {
+      const response = await deleteComment({ commentId });
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Refresh to see changes",
+          action: (
+            <ToastAction
+              onClick={() => {
+                SetRender(!render);
+              }}
+              altText="..."
+            >
+              Refresh
+            </ToastAction>
+          ),
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: response.reason,
+          action: <ToastAction altText="...">Close</ToastAction>,
+        });
+        console.log("Could not delete comment" + response.error);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "" + error,
+        action: <ToastAction altText="...">Close</ToastAction>,
+      });
+      console.log("Some error " + error);
+    } finally {
+      setDeleteBtnClicked(false);
+      setDialogOpen(false);
+      setPopoverState(false);
+    }
+  };
   return (
     <>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -64,12 +99,13 @@ export const DeleteCommentDialog = ({ commentId }: { commentId: string }) => {
               variant={"default"}
               onClick={() => {
                 setDeleteBtnClicked(true);
+                HandleOnClick();
               }}
               disabled={deleteBtnClicked}
             >
               {deleteBtnClicked ? (
                 <>
-                  <IconLoader2 className="w-4 h-4 animate-spin" /> Deleting...{" "}
+                  <IconLoader2 className="w-4 h-4 animate-spin" />
                 </>
               ) : (
                 <>Yes</>

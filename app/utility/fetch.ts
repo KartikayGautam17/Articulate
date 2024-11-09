@@ -1,5 +1,6 @@
-import axios from "axios";
+"use server";
 
+import axios from "axios";
 import { FetchUserProfileRequestProps } from "../api/fetch/profiles/route";
 import { FetchFollowersRequestProps } from "../api/fetch/followers/route";
 import { ResponseDataProps, fetchApiResponseProps } from "./types";

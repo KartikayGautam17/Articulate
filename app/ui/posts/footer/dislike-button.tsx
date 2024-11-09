@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
+
 import {
   IconLoader2,
   IconThumbDown,
   IconThumbDownFilled,
 } from "@tabler/icons-react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { boolean } from "zod";
 export const DislikeButton = ({
   btnClass,
@@ -11,19 +13,25 @@ export const DislikeButton = ({
   state,
   setState,
   disabled,
+  dislikeId,
+  setDislikeId,
 }: {
   btnClass: string;
   data: number;
   state: boolean;
   setState: any;
   disabled: boolean;
+  dislikeId: string | null;
+  setDislikeId: Dispatch<SetStateAction<string | null>>;
 }) => {
   return (
     <Button
       className={btnClass}
       disabled={disabled || dislikes === -1}
-      onClick={() => {
+      onClick={async () => {
         setState(!state);
+        if (!state) {
+        }
       }}
     >
       {!state ? (

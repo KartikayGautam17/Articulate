@@ -28,7 +28,6 @@ export const POST = async (request: Request) => {
         },
       });
 
-      console.log(comments);
       return NextResponse.json({
         success: true,
         commentArray: comments,

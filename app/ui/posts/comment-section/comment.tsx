@@ -12,7 +12,13 @@ import {
   getCommentsLikes,
   getUserProfile,
 } from "@/app/utility/fetch";
-import { Dislike, Like, Profile } from "@prisma/client";
+import {
+  CommentDislike,
+  CommentLike,
+  Dislike,
+  Like,
+  Profile,
+} from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -22,6 +28,12 @@ import {
 import { IconDots } from "@tabler/icons-react";
 
 import { DeleteCommentDialog } from "./delete-comment";
+import {
+  dislikeComment,
+  likeComment,
+  unDislikeComment,
+  unLikeComment,
+} from "@/app/utility/action";
 const btnClass = "rounded-md w-[75px]";
 
 export const PostComment = ({
@@ -30,8 +42,9 @@ export const PostComment = ({
   userId,
   content,
   createdAt,
-}: CommentProps) => {
-  useEffect(() => {}, []);
+  render,
+  SetRender,
+}: CommentProps & { render: any; SetRender: any }) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [ownComment, setOwnComment] = useState(false);
@@ -39,13 +52,55 @@ export const PostComment = ({
   const [isDisliked, setIsDisliked] = useState(false);
   const [commentLikes, setCommentLikes] = useState(-1);
   const [commentDislikes, setCommentDislikes] = useState(-1);
+  const [commentLikeId, setCommentLikeId] = useState<string | null>(null);
+  const [commentDislikeId, setCommentDislikeId] = useState<string | null>(null);
+
   useEffect(() => {
+    if (isLiked) {
+      try {
+        likeComment({ commentId, userId }).then((value) => {
+          if (value.success) {
+            const data = value.data as CommentLike;
+            setCommentLikeId(data.id);
+          }
+        });
+      } catch (error) {
+        //might do something in future about this
+      }
+    } else {
+      if (commentLikeId) {
+        unLikeComment({ commentLikeId }).then((value) => {
+          if (value.success) {
+            setCommentLikeId(null);
+          }
+        });
+      }
+    }
     if (isLiked && isDisliked) {
       setIsDisliked(false);
     }
   }, [isLiked]);
-
   useEffect(() => {
+    if (isDisliked) {
+      try {
+        dislikeComment({ commentId, userId }).then((value) => {
+          if (value.success) {
+            const data = value.data as CommentDislike;
+            setCommentDislikeId(data.id);
+          }
+        });
+      } catch (error) {
+        //might do something in future about this
+      }
+    } else {
+      if (commentDislikeId) {
+        unDislikeComment({ commentDislikeId }).then((value) => {
+          if (value.success) {
+            setCommentDislikeId(null);
+          }
+        });
+      }
+    }
     if (isLiked && isDisliked) {
       setIsLiked(false);
     }
@@ -76,6 +131,7 @@ export const PostComment = ({
           for (let i = 0; i < data.length; i += 1) {
             if (data[i].userId === userId) {
               flag = true;
+              setCommentLikeId(data[i].id);
               break;
             }
           }
@@ -94,6 +150,7 @@ export const PostComment = ({
           for (let i = 0; i < data.length; i += 1) {
             if (data[i].userId === userId) {
               flag = true;
+              setCommentDislikeId(data[i].id);
               break;
             }
           }
@@ -146,7 +203,12 @@ export const PostComment = ({
               </PopoverTrigger>
               <PopoverContent className="w-fit h-fit border-2 p-0 ">
                 <div className="flex flex-col">
-                  <DeleteCommentDialog commentId={commentId} />{" "}
+                  <DeleteCommentDialog
+                    render={render}
+                    SetRender={SetRender}
+                    commentId={commentId}
+                    setPopoverState={setPopoverOpenState}
+                  />{" "}
                 </div>
               </PopoverContent>
             </Popover>

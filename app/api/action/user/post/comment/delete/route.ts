@@ -4,12 +4,10 @@ import { z } from "zod";
 
 const DeleteCommentSchema = z.object({
   commentId: z.string().cuid(),
-  userId: z.string().cuid(),
 });
 
 export type DeleteCommentSchemaProps = {
   commentId: string;
-  userId: string;
 };
 
 export const POST = async (request: Request) => {
@@ -26,7 +24,6 @@ export const POST = async (request: Request) => {
       const comment = await prisma.comment.delete({
         where: {
           id: body.commentId,
-          authorId: body.userId,
         },
       });
       return NextResponse.json({ success: true, comment: comment });

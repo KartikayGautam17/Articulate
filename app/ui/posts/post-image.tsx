@@ -5,14 +5,12 @@ export const PostImage = ({ src }: { src: string }) => {
     <AspectRatio
       ratio={16 / 9}
       className="bg-black/50 rounded-[37px] py-2 my-4"
-      onClick={() => {
-        console.log(400);
-      }}
     >
       <Image
         src={src}
         alt="Failed to load image"
         fill
+        loading="eager"
         style={{ objectFit: "contain", borderRadius: "25px" }}
         className="max-w-[700px] max-h-[500px] rounded-[15px] "
       ></Image>

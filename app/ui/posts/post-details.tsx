@@ -21,7 +21,11 @@ export const PostDetails = ({
   ownPost,
   isSaved,
   setIsSaved,
+  render,
+  setRender,
 }: {
+  render: any;
+  setRender: any;
   ownPost: boolean;
   createdAt: string;
   name: string;
@@ -32,6 +36,7 @@ export const PostDetails = ({
   setIsSaved: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [popoverOpenState, setPopoverOpenState] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   return (
     <div className="border-b-2 w-full h-[40px]   flex items-center justify-between gap-2 text-sm">
       <div className="flex items-center justify-center">
@@ -68,7 +73,18 @@ export const PostDetails = ({
               popoverOpenState={popoverOpenState}
               setPopoverOpenState={setPopoverOpenState}
             />
-            {ownPost ? <DeletePostDialog postId={postId} /> : <></>}
+            {ownPost ? (
+              <DeletePostDialog
+                render={render}
+                setRender={setRender}
+                postId={postId}
+                userId={userId}
+                isDisabled={isDisabled}
+                setIsDisabled={setIsDisabled}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </PopoverContent>
       </Popover>

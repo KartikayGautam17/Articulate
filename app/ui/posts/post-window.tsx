@@ -10,6 +10,7 @@ export const Postswindow = ({
   userId: string | null | undefined;
 }) => {
   const [postArray, setPostArray] = useState([<div>Loading</div>]);
+  const [pRender, setPrender] = useState(false);
   useEffect(() => {
     if (userId)
       getPosts()
@@ -30,6 +31,8 @@ export const Postswindow = ({
                     content={val.content}
                     createdAt={val.createdAt}
                     ownPost={val.authorId === userId}
+                    pRender={pRender}
+                    setPrender={setPrender}
                   />
                 );
               })
@@ -41,7 +44,7 @@ export const Postswindow = ({
             <div>Error in fetching posts, possible reasons : {val}</div>,
           ]);
         });
-  }, []);
+  }, [pRender]);
   return (
     <div className="w-[800px] h-full border-x-2 mx-[50px]  overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark">
       <div

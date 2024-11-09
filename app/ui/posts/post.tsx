@@ -16,6 +16,8 @@ export const Post = ({
   content,
   ownPost = false,
   hotFocus = false,
+  pRender,
+  setPrender,
 }: {
   postId: string;
   authorId: string;
@@ -27,6 +29,8 @@ export const Post = ({
   ownPost?: boolean;
   commentsCount?: number;
   commentsArray?: CommentProps[];
+  pRender: any;
+  setPrender: any;
 }) => {
   return (
     <div
@@ -41,6 +45,8 @@ export const Post = ({
         userId={authorId}
         createdAt={createdAt}
         ownPost={ownPost}
+        render={pRender}
+        setRender={setPrender}
       />
       {/* too lazy to wrap the components inside the the Link tag below */}
       {hotFocus ? (

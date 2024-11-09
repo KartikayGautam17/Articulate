@@ -16,10 +16,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { IconArrowLeft, IconCancel, IconLoader2 } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconCancel,
+  IconCheck,
+  IconLoader2,
+  IconX,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
+import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { createPost } from "@/app/utility/action";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 const formSchema = z.object({
   title: z.string().min(1).max(30, {
     message: "Title must be between 1-30 characters",
@@ -32,26 +41,26 @@ const formSchema = z.object({
 });
 
 export const CreatePageForm = () => {
+  const { toast } = useToast();
   const router = useRouter();
   const HandleGoingBack = () => {
-    router.back();
+    router.push("/");
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const session = useSession();
 
-  useEffect(() => {
-    if (!isLoading) return;
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+  // useEffect(() => {
+  //   if (!isLoading) return;
+  //   const timeout = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000);
 
-    setIsLoading(true);
-    return () => {
-      clearTimeout(timeout);
-    };
-    //return is optional because the button will be disabled in order to trigger another effect
-    //but a good practice to do this ig
-  }, [isLoading]);
+  //   setIsLoading(true);
+  //   return () => {
+  //     clearTimeout(timeout);
+  //   };
+  // }, [isLoading]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,8 +72,79 @@ export const CreatePageForm = () => {
   });
 
   const onSubmit = (value: z.infer<typeof formSchema>) => {
-    //do something
+    setIsLoading(true);
+    createPost({
+      title: value.title,
+      content: value.content,
+      images: [value.image ? value.image : ""],
+      authorId: id as string,
+    })
+      .then((val) => {
+        if (val.success) {
+          toast({
+            title: (
+              <div className="flex justify-start items-center gap-1">
+                <IconCheck width={16} height={16} />
+                <span>Sucess</span>
+              </div>
+            ),
+            description: "It might take some time for your post to appear",
+            action: <ToastAction altText="...">Close</ToastAction>,
+          });
+        } else {
+          toast({
+            title: (
+              <div className="flex justify-start items-center gap-1">
+                <IconX width={16} height={16} />
+                <span>Failure</span>
+              </div>
+            ),
+
+            description: "Failed creating new post" + val.error,
+            action: <ToastAction altText="...">Close</ToastAction>,
+          });
+        }
+      })
+      .catch((error) => {
+        toast({
+          title: (
+            <div className="flex justify-start items-center gap-1">
+              <IconX width={16} height={16} />
+              <span>Failure</span>
+            </div>
+          ),
+
+          description: "Failed creating new post" + error,
+          action: <ToastAction altText="...">Close</ToastAction>,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
+  const { id } = useParams();
+  const [verified, setVerified] = useState<
+    "loading" | "unverified" | "verified"
+  >("loading");
+
+  useEffect(() => {
+    if (session.data?.user.id) {
+      if (session.data.user.id === id) {
+        setVerified("verified");
+      } else {
+        setVerified("unverified");
+      }
+    }
+  }, [session.data?.user.id]);
+
+  if (verified === "loading") {
+    return <div>Loading</div>;
+  } else if (verified === "unverified") {
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+    return <div>Unauthorized, Redirecting...</div>;
+  }
   return (
     <div
       className="w-[800px] h-full border-x-2 mx-[50px]  overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark 
@@ -100,7 +180,7 @@ export const CreatePageForm = () => {
                   <Textarea
                     placeholder="Your Post Content"
                     {...field}
-                    className="resize-none"
+                    className="resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                 </FormControl>
                 <FormMessage />
@@ -139,21 +219,18 @@ export const CreatePageForm = () => {
           />
           <div className="flex justify-between items-center">
             {!isLoading ? (
-              <Button
-                type="submit"
-                onClick={() => {
-                  setIsLoading(true);
-                }}
-              >
-                Submit
-              </Button>
+              <Button type="submit">Submit</Button>
             ) : (
               <Button type="submit" disabled>
                 <IconLoader2 className="w-4 h-4 animate-spin" />
                 Submitting
               </Button>
             )}
-            <Button variant={"outline"} onClick={HandleGoingBack}>
+            <Button
+              variant={"outline"}
+              type={"button"}
+              onClick={HandleGoingBack}
+            >
               <IconArrowLeft />
               Go Back
             </Button>

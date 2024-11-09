@@ -4,12 +4,10 @@ import { z } from "zod";
 
 const DeleteLikeSchema = z.object({
   likeId: z.string().cuid(),
-  userId: z.string().cuid(),
 });
 
 export type DeleteLikeSchemaProps = {
   likeId: string;
-  userId: string;
 };
 
 export const POST = async (request: Request) => {
@@ -26,11 +24,11 @@ export const POST = async (request: Request) => {
       const like = await prisma.like.delete({
         where: {
           id: body.likeId,
-          userId: body.userId,
         },
       });
       return NextResponse.json({ success: true, like: like });
     } catch (error) {
+      console.error(error);
       return NextResponse.json({
         success: false,
         reason: "Prisma Error",

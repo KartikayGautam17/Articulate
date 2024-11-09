@@ -28,9 +28,12 @@ export const SideProfileWrapper = ({ userId }: { userId: string | null }) => {
         });
     }
   }, [userId]);
-  if (!userId) return <div>Loading</div>;
+  if (!userId)
+    return (
+      <div className="w-[250px] h-full border-x-2 mr-[50px] pt-[50px] pb-5 px-[25px]"></div>
+    );
   return (
-    <div>
+    <>
       <Profile
         name={name}
         image={image}
@@ -38,6 +41,6 @@ export const SideProfileWrapper = ({ userId }: { userId: string | null }) => {
         links={links}
         userId={userId}
       />
-    </div>
+    </>
   );
 };

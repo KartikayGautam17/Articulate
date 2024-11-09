@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
           userId: body.userId,
         },
       });
-      return NextResponse.json({ success: true, dislike: dislike });
+      return NextResponse.json({ success: true, commentDislike: dislike });
     } catch (error) {
       return NextResponse.json({
         success: false,

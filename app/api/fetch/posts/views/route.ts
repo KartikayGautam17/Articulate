@@ -20,14 +20,14 @@ export const POST = async (request: Request) => {
     });
   } else {
     try {
-      const views = await prisma.view.count({
+      const views = await prisma.view.findMany({
         where: {
           postId: body.postId,
         },
       });
       return NextResponse.json({
         success: true,
-        viewArray: views,
+        viewsArray: views,
       });
     } catch (error) {
       return NextResponse.json({

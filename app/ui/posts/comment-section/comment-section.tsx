@@ -17,10 +17,16 @@ export const CommentSection = ({
   commentsCount,
   commentsArray,
   postId,
+  userId,
+  render,
+  SetRender,
 }: {
+  render: any;
+  SetRender: any;
   commentsCount: number;
   commentsArray: any;
   postId: string;
+  userId: string;
 }) => {
   return (
     <div className="mt-5">
@@ -31,7 +37,12 @@ export const CommentSection = ({
         </span>
       </div>
       <div id="comments-container" className=" w-full">
-        <AddComment />
+        <AddComment
+          postId={postId}
+          userId={userId}
+          render={render}
+          SetRender={SetRender}
+        />
         <Separator className="bg-gray-600 dark:bg-gray-400 mb-2" />
         <div className="p-2 flex flex-col gap-4 border-2">
           {commentsArray.map((val: any): typeof PostComment => {
