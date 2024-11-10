@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
 import {
   Form,
   FormControl,
@@ -29,6 +30,8 @@ import { useSession } from "next-auth/react";
 import { createPost } from "@/app/utility/action";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
+import { uploadImage } from "@/app/utility/cloudinary";
+import axios from "axios";
 const formSchema = z.object({
   title: z.string().min(1).max(30, {
     message: "Title must be between 1-30 characters",
@@ -37,7 +40,7 @@ const formSchema = z.object({
     .string()
     .min(1, { message: "Content should atleast have 1 character" })
     .max(2048, { message: "Content cannot be more than 2048 characters" }),
-  image: z.string().optional(),
+  image: z.any(),
 });
 
 export const CreatePageForm = () => {
@@ -49,34 +52,34 @@ export const CreatePageForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const session = useSession();
-
-  // useEffect(() => {
-  //   if (!isLoading) return;
-  //   const timeout = setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 1000);
-
-  //   setIsLoading(true);
-  //   return () => {
-  //     clearTimeout(timeout);
-  //   };
-  // }, [isLoading]);
-
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       content: "",
-      image: "",
+      image: null,
     },
   });
-
-  const onSubmit = (value: z.infer<typeof formSchema>) => {
+  const onSubmit = async (value: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+    const imageObject: { url: string | null } = { url: null };
+
+    if (imageFile) {
+      const formData = new FormData();
+      formData.set("image", imageFile);
+      const response = await uploadImage({ formData });
+      if (response.success) {
+        imageObject.url = response.url as string;
+      } else {
+        throw new Error("Could not upload image" + response.message);
+      }
+    }
     createPost({
       title: value.title,
       content: value.content,
-      images: [value.image ? value.image : ""],
+      //images: [value.image ? value.image : ""], The value by this code is only getting use filepath not the entire File
+      images: [imageObject.url ? imageObject.url : ""],
       authorId: id as string,
     })
       .then((val) => {
@@ -145,6 +148,7 @@ export const CreatePageForm = () => {
     }, 2000);
     return <div>Unauthorized, Redirecting...</div>;
   }
+
   return (
     <div
       className="w-[800px] h-full border-x-2 mx-[50px]  overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark 
@@ -200,11 +204,18 @@ export const CreatePageForm = () => {
                       type="file"
                       className="cursor-pointer"
                       {...field}
-                      accept="image/jpeg, image/png ,image/jpg"
+                      onChange={(e) => {
+                        setImageFile(
+                          e.target.files?.length ? e.target.files[0] : null
+                        );
+                      }}
+                      accept="image/jpeg , image/jpg, image/png"
                     />
                     <Button
+                      type="button"
                       onClick={() => {
                         field.onChange("");
+                        setImageFile(null);
                       }}
                       className="absolute bottom-0 right-0"
                     >

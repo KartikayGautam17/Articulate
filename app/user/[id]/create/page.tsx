@@ -14,8 +14,7 @@ export default function CreateUserPost() {
     return <div>Loading</div>;
   }
   const { id } = useParams();
-  console.log(id);
-  console.log(session.data?.user.id);
+
   if (session.data?.user.id !== id) {
     return <div>Unauthorized</div>;
   } else {

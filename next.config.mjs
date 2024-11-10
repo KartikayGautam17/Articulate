@@ -15,6 +15,7 @@ const nextConfig = {
       { protocol: "https", hostname: "github.com", port: "" },
       { protocol: "https", hostname: "cdn.discordapp.com", port: "" },
       { protocol: "https", hostname: "thumbs.dreamstime.com", port: "" },
+      { protocol: "http", hostname: "res.cloudinary.com", port: "" },
     ],
   },
 };
