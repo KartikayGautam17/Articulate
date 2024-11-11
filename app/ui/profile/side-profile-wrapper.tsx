@@ -3,12 +3,20 @@ import { useEffect, useState } from "react";
 import { Profile } from "./profile";
 import { getUserProfile } from "@/app/utility/fetch";
 import { Profile as ProfileType } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
-export const SideProfileWrapper = ({ userId }: { userId: string | null }) => {
+export const SideProfileWrapper = ({
+  userId,
+  sessionId,
+}: {
+  userId: string | null;
+  sessionId: string | null;
+}) => {
   const [name, setName] = useState("loading");
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const [links, setLinks] = useState<string[] | null>([]);
+
   useEffect(() => {
     if (userId) {
       getUserProfile({ userId: userId })
@@ -28,7 +36,7 @@ export const SideProfileWrapper = ({ userId }: { userId: string | null }) => {
         });
     }
   }, [userId]);
-  if (!userId)
+  if (!userId || !sessionId)
     return (
       <div className="w-[250px] h-full border-x-2 mr-[50px] pt-[50px] pb-5 px-[25px]"></div>
     );
@@ -40,6 +48,7 @@ export const SideProfileWrapper = ({ userId }: { userId: string | null }) => {
         description={description}
         links={links}
         userId={userId}
+        sessionId={sessionId}
       />
     </>
   );

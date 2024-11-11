@@ -6,11 +6,7 @@ import { ProfileLinks } from "./profile-links";
 import { ProfileName } from "./profile-name";
 import { ProfilePhoto } from "./profile-photo";
 import { ProfileStats } from "./profile-stats";
-import {
-  getUserFollowers,
-  getUserFollowing,
-  getUserProfile,
-} from "@/app/utility/fetch";
+import { getUserFollowers, getUserFollowing } from "@/app/utility/fetch";
 import { Follows, Profile as ProfileType } from "@prisma/client";
 
 export const Profile = ({
@@ -19,21 +15,32 @@ export const Profile = ({
   userId,
   description,
   links,
+  sessionId,
 }: {
+  sessionId: string;
   links: string[] | null;
   description: string;
   name: string;
   image: string | null;
   userId: string;
 }) => {
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [followers, setFollowers] = useState(-1);
   const [following, setFollowing] = useState(-1);
-
+  const [followId, setFollowId] = useState<string | null>(null);
   useEffect(() => {
     getUserFollowers({ userId }).then((value) => {
       if (value.success) {
         const data = value.data as Follows[];
+        let flag = false;
+        for (let i = 0; i < data.length; i += 1) {
+          if (data[i].followerId === sessionId) {
+            flag = true;
+            setFollowId(data[i].id);
+            break;
+          }
+        }
+        setIsFollowing(flag);
         setFollowers(data.length);
       }
     });
@@ -41,6 +48,7 @@ export const Profile = ({
     getUserFollowing({ userId }).then((value) => {
       if (value.success) {
         const data = value.data as Follows[];
+
         setFollowing(data.length);
       }
     });
@@ -61,11 +69,21 @@ export const Profile = ({
         />
         <ProfileName name={name} />
         <ProfileDescription description={description} />
-        <FollowUserButton
-          following={isFollowing}
-          setFollowing={setIsFollowing}
-          username={name}
-        />
+
+        {isFollowing !== null ? (
+          <FollowUserButton
+            sessionId={sessionId}
+            following={isFollowing}
+            setFollowing={setIsFollowing}
+            username={name}
+            userId={userId}
+            followId={followId}
+            setFollowId={setFollowId}
+          />
+        ) : (
+          <></>
+        )}
+
         <ProfileLinks links={links ? links : []} />
         <ProfileStats following={following} followers={followers} />
       </div>

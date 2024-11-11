@@ -17,11 +17,13 @@ export default function UserPage() {
   const [isVerified, setIsVerified] = useState<boolean>(true);
 
   const [profile, setProfile] = useState<{
+    id: string | null;
     name: string | null;
     description: string | null;
     links: string[] | null;
     image: string | null;
   }>({
+    id: null,
     name: "loading",
     description: "loading",
     links: ["loading", "loading", "loading"],
@@ -35,6 +37,7 @@ export default function UserPage() {
           const data = val.data as Profile;
 
           setProfile({
+            id: data.id,
             name: data.name,
             description: data.description,
             image: data.image,
@@ -64,6 +67,7 @@ export default function UserPage() {
           <ProfileWrapper
             paramId={paramId as string}
             profile={profile}
+            sessionId={session.data?.user.id as string}
             ownProfile={paramId === session.data?.user.id}
           />
           <ProfilePlaceHolder />

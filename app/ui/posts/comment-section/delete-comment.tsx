@@ -38,16 +38,7 @@ export const DeleteCommentDialog = ({
         toast({
           title: "Success",
           description: "Refresh to see changes",
-          action: (
-            <ToastAction
-              onClick={() => {
-                SetRender(!render);
-              }}
-              altText="..."
-            >
-              Refresh
-            </ToastAction>
-          ),
+          action: <ToastAction altText="...">Close</ToastAction>,
         });
       } else {
         toast({

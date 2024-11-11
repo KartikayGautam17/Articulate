@@ -25,9 +25,6 @@ export const POST = async (request: Request) => {
         where: {
           followingId: body.userId,
         },
-        select: {
-          follower: true,
-        },
       });
       return NextResponse.json({
         success: true,

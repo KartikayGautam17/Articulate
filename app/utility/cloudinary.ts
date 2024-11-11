@@ -17,11 +17,15 @@ export const uploadImage = async ({ formData }: { formData: FormData }) => {
   const encoding = "base64";
   const base64data = Buffer.from(arrayBuffer).toString("base64");
   const fileUri = "data:" + mimeType + ";" + encoding + "," + base64data;
-  const res = await cloudinaryUpload({ fileUri, fileName: file.name });
-  if (res.success) {
-    return { success: true, url: res.result?.url };
-  } else {
-    return { success: false, message: res.error?.message };
+  try {
+    const res = await cloudinaryUpload({ fileUri, fileName: file.name });
+    if (res.success) {
+      return { success: true, url: res.result?.url };
+    } else {
+      return { success: false, message: res.error };
+    }
+  } catch (error) {
+    return { success: false, message: error };
   }
 };
 

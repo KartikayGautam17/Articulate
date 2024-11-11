@@ -102,7 +102,10 @@ export default function PostPage() {
         <div className="w-full flex mContainer justify-between">
           <Sidebar />
           <PostWrapper>{postData}</PostWrapper>
-          <SideProfileWrapper userId={author} />
+          <SideProfileWrapper
+            userId={author}
+            sessionId={session.data?.user.id as string}
+          />
         </div>
       </div>
     </>

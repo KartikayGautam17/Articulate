@@ -48,18 +48,7 @@ export const DeletePostDialog = ({
             </div>
           ),
           description: "Refresh to see changes",
-          action: (
-            <ToastAction
-              onClick={() => {
-                if (setRender) {
-                  setRender(!render);
-                }
-              }}
-              altText="..."
-            >
-              Refresh
-            </ToastAction>
-          ),
+          action: <ToastAction altText="...">Close</ToastAction>,
         });
         setDeleteBtnClicked(false);
         setDialogOpen(false);

@@ -55,7 +55,6 @@ export const Post = ({
           <PostImageWrapper src={imageSrc ? imageSrc : ""} />
           <PostContent content={content} />
           <PostFooter postId={postId} userId={authorId} />
-
           <CommentSectionWrapper postId={postId} />
         </div>
       ) : (

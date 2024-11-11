@@ -20,7 +20,11 @@ export const ProfileMain = ({
   image,
   description,
   links,
+  sessionId,
+  paramId,
 }: {
+  paramId: string;
+  sessionId: string;
   ownProfile: boolean;
   name: string | null;
   image: string | null;
@@ -48,17 +52,14 @@ export const ProfileMain = ({
               alt="loading"
             />
           </div>
-
           <div className={contentItemClass}>
             <Label>Name</Label>
             <div>{name}</div>
           </div>
-
           <div className={contentItemClass}>
             <Label>Description</Label>
             <div>{description}</div>
           </div>
-
           <div className={contentItemClass}>
             <Label>Links</Label>
             <div className={contentItemClass}>
@@ -98,6 +99,8 @@ export const ProfileMain = ({
           <CardFooter>
             <MainProfileUserFollowButton
               username={name ? name : "loading name"}
+              sessionId={sessionId}
+              userId={paramId}
             />
           </CardFooter>
         )}

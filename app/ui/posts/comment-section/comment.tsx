@@ -182,7 +182,7 @@ export const PostComment = ({
           </AvatarFallback>
         </Avatar>
         <Link
-          href={"pass commentid then fetch the user"}
+          href={process.env.NEXT_PUBLIC_BASE_URL + "user/" + userId}
           className="hover:underline font-normal"
         >
           <span>{name}</span>
