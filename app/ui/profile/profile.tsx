@@ -54,7 +54,7 @@ export const Profile = ({
     });
   }, []);
   return (
-    <div className="w-[250px] h-full border-x-2 mr-[50px] pt-[50px] pb-5 px-[25px]">
+    <div className="w-[250px] h-full border-x-2 mr-[50px] pt-[50px] pb-5 px-[25px] hidden lg:block">
       <div
         id="profile-container"
         className="flex flex-col gap-5 w-full h-full justify-start items-center overflow-y-auto custom-scrollbar dark:custom-scrollbar-dark"

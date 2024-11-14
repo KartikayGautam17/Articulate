@@ -28,6 +28,9 @@ export const POST = async (request: Request) => {
         select: {
           post: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       return NextResponse.json({ success: true, postArray: posts });
     } catch (error) {

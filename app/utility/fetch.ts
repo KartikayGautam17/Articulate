@@ -7,7 +7,7 @@ import { ResponseDataProps, fetchApiResponseProps } from "./types";
 import { FetchFollowingRequestProps } from "../api/fetch/following/route";
 import { FetchPostRequestProps } from "../api/fetch/posts/u/route";
 import { FetchSavedPostsRequestProps } from "../api/fetch/posts/u/saved/route";
-import { FetchLikedPostsRequestProps } from "../api/fetch/posts/u/liked/route.";
+import { FetchLikedPostsRequestProps } from "../api/fetch/posts/u/liked/route";
 import { FetchViewedPostsRequestProps } from "../api/fetch/posts/u/viewed/route";
 import { FetchCommentsRequestProps } from "../api/fetch/posts/comments/route";
 import { FetchPostViewsRequestProps } from "../api/fetch/posts/views/route";
@@ -499,3 +499,11 @@ export const getCommentsDislikes = async ({
     reason: response_data.reason,
   };
 };
+
+/**
+ * Gets all the posts published by users on the platform.[api/fetch/posts]
+ *
+ * Requires no parameter and returns an array containing all the posts.
+ *
+ * @returns Post[]
+ */

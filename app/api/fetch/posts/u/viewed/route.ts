@@ -25,9 +25,13 @@ export const POST = async (request: Request) => {
         where: {
           userId: body.userId,
         },
+        distinct: ["postId"],
         select: {
           post: true,
         },
+      });
+      posts.sort((a, b) => {
+        return a.post.createdAt > b.post.createdAt ? -1 : 1;
       });
       return NextResponse.json({ success: true, postArray: posts });
     } catch (error) {

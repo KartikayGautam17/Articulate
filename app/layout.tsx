@@ -5,6 +5,8 @@ import { ThemeWrapper } from "./context/theme-context";
 import SessionAuthContext from "./context/session-context";
 import UserProvider from "./context/user-context";
 import { Toaster } from "@/components/ui/toaster";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,19 +22,21 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body>
-        <ThemeWrapper
-          attribute="class"
-          defaultTheme="light"
-          disableTransitionOnChange={true}
-          enableSystem={true}
-        >
-          <SessionAuthContext>
-            <UserProvider>
-              {children}
-              <Toaster />
-            </UserProvider>
-          </SessionAuthContext>
-        </ThemeWrapper>
+        <Suspense fallback={<Loading />}>
+          <ThemeWrapper
+            attribute="class"
+            defaultTheme="light"
+            disableTransitionOnChange={true}
+            enableSystem={true}
+          >
+            <SessionAuthContext>
+              <UserProvider>
+                {children}
+                <Toaster />
+              </UserProvider>
+            </SessionAuthContext>
+          </ThemeWrapper>
+        </Suspense>
       </body>
     </html>
   );
