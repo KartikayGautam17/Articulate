@@ -31,6 +31,7 @@ export const POST = async (request: Request) => {
         user: user,
       });
     } catch (error) {
+      console.log("Error on server " + error);
       return NextResponse.json({
         success: false,
         reason: "Prisma Error",
